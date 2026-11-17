@@ -9,7 +9,7 @@ import {
   Shield
 } from 'lucide-react';
 
-export default function Header() {
+export default function Header({ onNavigate }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('EN');
@@ -234,6 +234,7 @@ export default function Header() {
               )}
             </div>
 
+<<<<<<< HEAD
             {/* 11. Profile Icon & Admin Portal Shortcut */}
             <a
               href="#admin"
@@ -243,6 +244,19 @@ export default function Header() {
               <Shield className="w-3.5 h-3.5 text-[#F04B0A]" />
               <span>Admin</span>
             </a>
+=======
+            {/* 11. Profile / Sign In Button */}
+            <button
+              type="button"
+              onClick={() => onNavigate ? onNavigate('/login') : (window.location.pathname = '/login')}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-blue-200 text-[#0f2d59] hover:bg-blue-50 transition-colors cursor-pointer text-xs font-bold"
+              aria-label="Sign In or Account"
+              title="Sign In to GlobalHealthAI"
+            >
+              <User className="w-3.5 h-3.5 text-[#1677E8]" />
+              <span className="hidden xl:inline">Sign In</span>
+            </button>
+>>>>>>> bd8394a20bdfba4b40e95636807943219f959697
 
           </nav>
 
@@ -277,6 +291,16 @@ export default function Header() {
             <a href="#categories" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-1.5 text-slate-700">Categories</a>
             <a href="#categories" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-1.5 text-slate-700">Health Cards (1,000)</a>
             <a href="#founder" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-1.5 text-slate-700">About</a>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (onNavigate) onNavigate('/login');
+                else window.location.pathname = '/login';
+              }}
+              className="w-full text-left px-3 py-2 bg-gradient-to-r from-[#F04B0A] to-[#ff6224] text-white font-bold rounded-lg cursor-pointer"
+            >
+              Sign In to Dashboard
+            </button>
           </div>
         )}
 
