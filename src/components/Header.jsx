@@ -234,18 +234,17 @@ export default function Header({ onNavigate }) {
               )}
             </div>
 
-<<<<<<< HEAD
-            {/* 11. Profile Icon & Admin Portal Shortcut */}
-            <a
-              href="#admin"
+            {/* 11. Admin & Sign In Buttons */}
+            <button
+              type="button"
+              onClick={() => onNavigate ? onNavigate('/admin/dashboard') : (window.location.hash = '#admin')}
               className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#08165B] hover:bg-[#1677E8] text-white text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer"
               title="Open GlobalHealthAI Admin Panel"
             >
               <Shield className="w-3.5 h-3.5 text-[#F04B0A]" />
               <span>Admin</span>
-            </a>
-=======
-            {/* 11. Profile / Sign In Button */}
+            </button>
+
             <button
               type="button"
               onClick={() => onNavigate ? onNavigate('/login') : (window.location.pathname = '/login')}
@@ -256,7 +255,6 @@ export default function Header({ onNavigate }) {
               <User className="w-3.5 h-3.5 text-[#1677E8]" />
               <span className="hidden xl:inline">Sign In</span>
             </button>
->>>>>>> bd8394a20bdfba4b40e95636807943219f959697
 
           </nav>
 
