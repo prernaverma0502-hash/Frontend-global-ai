@@ -52,7 +52,7 @@ export default function BottomRow() {
   ];
 
   return (
-    <section className="max-w-[1360px] mx-auto px-4 sm:px-6 py-2.5 pb-8">
+    <section className="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6 py-2.5 pb-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
         
         {/* Left Column (6 of 12 cols): The Red – Yellow – Green Guide */}
@@ -64,12 +64,12 @@ export default function BottomRow() {
           <div className="flex-1 bg-[#ebf4fd] border border-blue-200/90 rounded-2xl p-2.5 flex items-stretch gap-2 shadow-2xs">
             
             {/* Red Card */}
-            <div className="flex-1 bg-white rounded-xl p-2 border border-red-100 flex flex-col justify-between shadow-2xs">
+            <div className="flex-1 bg-white rounded-xl p-2.5 border border-red-100 flex flex-col justify-between shadow-2xs">
               <div>
                 <div className="w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center mb-1.5 shadow-2xs">
                   <Siren className="w-3.5 h-3.5 stroke-[2.2]" />
                 </div>
-                <h4 className="text-[11px] font-bold text-[#dc2626] leading-tight mb-1">
+                <h4 className="text-[11.5px] font-bold text-[#dc2626] leading-tight mb-1">
                   Red – Emergency Now
                 </h4>
                 <p className="text-[9.5px] text-slate-600 leading-tight">
@@ -79,12 +79,12 @@ export default function BottomRow() {
             </div>
 
             {/* Yellow Card */}
-            <div className="flex-1 bg-white rounded-xl p-2 border border-amber-100 flex flex-col justify-between shadow-2xs">
+            <div className="flex-1 bg-white rounded-xl p-2.5 border border-amber-100 flex flex-col justify-between shadow-2xs">
               <div>
                 <div className="w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center mb-1.5 shadow-2xs">
                   <Clock className="w-3.5 h-3.5 stroke-[2.2]" />
                 </div>
-                <h4 className="text-[11px] font-bold text-[#b45309] leading-tight mb-1">
+                <h4 className="text-[11.5px] font-bold text-[#b45309] leading-tight mb-1">
                   Yellow – See a Doctor Soon
                 </h4>
                 <p className="text-[9.5px] text-slate-600 leading-tight">
@@ -94,12 +94,12 @@ export default function BottomRow() {
             </div>
 
             {/* Green Card */}
-            <div className="flex-1 bg-white rounded-xl p-2 border border-emerald-100 flex flex-col justify-between shadow-2xs">
+            <div className="flex-1 bg-white rounded-xl p-2.5 border border-emerald-100 flex flex-col justify-between shadow-2xs">
               <div>
                 <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-1.5 shadow-2xs">
                   <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />
                 </div>
-                <h4 className="text-[11px] font-bold text-[#15803d] leading-tight mb-1">
+                <h4 className="text-[11.5px] font-bold text-[#15803d] leading-tight mb-1">
                   Green – Not Urgent
                 </h4>
                 <p className="text-[9.5px] text-slate-600 leading-tight">
@@ -117,8 +117,9 @@ export default function BottomRow() {
             Popular Health Tools
           </h3>
 
-          <div className="flex-1 bg-[#ebf4fd] border border-blue-200/90 rounded-2xl p-2.5 flex items-center shadow-2xs overflow-x-auto">
-            <div className="grid grid-cols-7 gap-1.5 w-full min-w-[480px]">
+          <div className="flex-1 bg-[#ebf4fd] border border-blue-200/90 rounded-2xl p-2.5 flex items-center shadow-2xs">
+            {/* 7 tools fitting seamlessly across the row with NO scrollbar */}
+            <div className="grid grid-cols-7 gap-1.5 w-full">
               {tools.map((item, idx) => {
                 const Icon = item.icon;
                 return (
