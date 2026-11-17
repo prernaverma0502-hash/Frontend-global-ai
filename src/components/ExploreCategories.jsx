@@ -176,7 +176,7 @@ export default function ExploreCategories() {
 
   return (
     <section id="categories" className="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6 pt-10 sm:pt-14 pb-5">
-      
+
       {/* Category Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2 flex-wrap">
