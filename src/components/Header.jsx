@@ -66,8 +66,8 @@ export default function Header({ onNavigate }) {
             </div>
           </div>
 
-          {/* Desktop Navigation Links: Always visible on medium+ screens */}
-          <nav className="hidden md:flex items-center space-x-1 lg:space-x-1.5 text-[12px] lg:text-[13px] font-semibold text-[#0f2d59] shrink-0">
+          {/* Desktop Navigation Links: Visible on xl (1280px+) screens where all 11 items fit comfortably */}
+          <nav className="hidden xl:flex items-center space-x-1 lg:space-x-1.5 text-[12px] lg:text-[13px] font-semibold text-[#0f2d59] shrink-0">
             
             {/* 1. Home (Active pill with orange underline bar) */}
             <div className="relative">
@@ -258,11 +258,11 @@ export default function Header({ onNavigate }) {
 
           </nav>
 
-          {/* Mobile hamburger for small mobile screens only */}
-          <div className="flex items-center gap-2 md:hidden">
+          {/* Mobile & Tablet hamburger for screens < 1280px */}
+          <div className="flex items-center gap-1.5 sm:gap-2 xl:hidden">
             <a
               href="#admin"
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#08165B] text-white text-xs font-bold"
+              className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#08165B] text-white text-xs font-bold shadow-xs hover:bg-[#1677E8] transition-colors"
             >
               <Shield className="w-3 h-3 text-[#F04B0A]" />
               <span>Admin</span>
@@ -270,16 +270,16 @@ export default function Header({ onNavigate }) {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-[#0f2d59]"
+              className="p-1.5 sm:p-2 text-[#0f2d59]"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu drawer for phone screens */}
+        {/* Mobile menu drawer for phone and tablet screens */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-3 border-t border-blue-100 space-y-2 bg-white text-sm font-semibold">
+          <div className="xl:hidden py-3 border-t border-blue-100 space-y-2 bg-white text-sm font-semibold">
             <a href="#admin" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 bg-[#08165B] text-white font-bold rounded-lg">
               <Shield className="w-4 h-4 text-[#F04B0A]" />
               <span>Open Admin Panel</span>

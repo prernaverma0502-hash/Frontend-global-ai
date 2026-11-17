@@ -163,18 +163,23 @@ export default function MiddleRow() {
 
         {/* Right Column (approx 66% width): How GlobalHealthAI Helps You */}
         <div className="lg:col-span-8 flex flex-col">
-          <h3 className="text-sm sm:text-[15px] font-bold text-[#0c2340] mb-1.5 tracking-tight">
-            How GlobalHealthAI Helps You
-          </h3>
+          <div className="flex items-center justify-between mb-1.5">
+            <h3 className="text-sm sm:text-[15px] font-bold text-[#0c2340] tracking-tight">
+              How GlobalHealthAI Helps You
+            </h3>
+            <span className="text-[10px] font-semibold text-[#1677E8] lg:hidden flex items-center gap-1">
+              <span>Scroll steps</span> →
+            </span>
+          </div>
 
-          <div className="flex-1 bg-[#f4f9ff] border border-blue-200/90 rounded-2xl p-2 sm:p-2.5 flex items-center shadow-2xs">
-            {/* 8 Cards in a single flex row - NO scrollbar, all 8 fit on screen */}
-            <div className="flex items-center justify-between w-full gap-0.5 sm:gap-1">
+          <div className="flex-1 bg-[#f4f9ff] border border-blue-200/90 rounded-2xl p-2 sm:p-2.5 flex items-center shadow-2xs overflow-hidden">
+            {/* Responsive steps: smooth horizontal swipe on mobile/tablet, fits 8 columns across desktop */}
+            <div className="flex items-center w-full gap-1.5 sm:gap-2 overflow-x-auto pb-1 lg:overflow-x-visible lg:justify-between lg:gap-0.5">
               {steps.map((item, idx) => (
                 <React.Fragment key={idx}>
-                  {/* Step Card matching reference image exact colors and padding */}
+                  {/* Step Card matching reference image colors and padding */}
                   <div
-                    className={`flex-1 min-w-0 ${item.cardBg} border ${item.cardBorder} rounded-xl p-1 sm:p-1.5 flex flex-col items-center justify-start text-center shadow-2xs hover:shadow-sm transition-all h-[104px] sm:h-[110px]`}
+                    className={`w-[102px] sm:w-[110px] lg:w-auto lg:flex-1 shrink-0 lg:shrink min-w-[96px] lg:min-w-0 ${item.cardBg} border ${item.cardBorder} rounded-xl p-1.5 flex flex-col items-center justify-start text-center shadow-2xs hover:shadow-sm transition-all h-[108px] sm:h-[110px]`}
                   >
                     {/* Icon container */}
                     <div className="h-7 sm:h-8 flex items-center justify-center mb-1 shrink-0">
@@ -182,7 +187,7 @@ export default function MiddleRow() {
                     </div>
 
                     {/* Full Text without truncation, wrapping cleanly */}
-                    <div className="text-[9px] sm:text-[9.5px] lg:text-[10px] font-bold text-[#0c2340] leading-[1.15] text-center px-0.5">
+                    <div className="text-[9.5px] sm:text-[9.5px] lg:text-[10px] font-bold text-[#0c2340] leading-[1.2] text-center px-0.5">
                       {item.title}
                     </div>
                   </div>
