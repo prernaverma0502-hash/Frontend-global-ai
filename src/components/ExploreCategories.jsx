@@ -164,7 +164,7 @@ export default function ExploreCategories() {
 
   return (
     <section id="categories" className="max-w-[1360px] mx-auto px-4 sm:px-6 pt-7 pb-4">
-      
+
       {/* Category Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3.5">
         <div className="flex items-center gap-2 flex-wrap">
@@ -188,25 +188,25 @@ export default function ExploreCategories() {
         </button>
       </div>
 
-      {/* 12 Cards in 6-column x 2-row desktop grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
+      {/* 12 Cards in 4-column desktop grid (3 rows of 4 cards) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
         {categories.map((card) => {
           const Icon = card.icon;
           return (
             <div
               key={card.id}
-              className={`rounded-2xl p-2.5 ${card.cardBg} border ${card.cardBorder} shadow-2xs hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group`}
+              className={`rounded-2xl p-3 sm:p-3.5 ${card.cardBg} border ${card.cardBorder} shadow-2xs hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group`}
             >
               <div>
                 {/* Top: Icon + Image Preview */}
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-2.5">
                   {/* Left Circle Icon */}
-                  <div className={`w-7 h-7 rounded-full ${card.iconBg} flex items-center justify-center text-white shrink-0 shadow-xs`}>
+                  <div className={`w-8 h-8 rounded-full ${card.iconBg} flex items-center justify-center text-white shrink-0 shadow-xs`}>
                     <Icon className="w-4 h-4 stroke-[2.2]" />
                   </div>
 
-                  {/* Right Image */}
-                  <div className="w-16 h-8 rounded-lg overflow-hidden shrink-0 border border-slate-100">
+                  {/* Right Image Thumbnail */}
+                  <div className="w-20 h-10 rounded-lg overflow-hidden shrink-0 border border-slate-100 shadow-2xs">
                     <img
                       src={card.image}
                       alt={card.title}
@@ -216,20 +216,20 @@ export default function ExploreCategories() {
                 </div>
 
                 {/* Title */}
-                <h3 className={`font-bold text-[12.5px] leading-tight ${card.textColor} mb-1`}>
+                <h3 className={`font-bold text-[13.5px] sm:text-[14px] leading-tight ${card.textColor} mb-1`}>
                   {card.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-[10px] text-slate-500 font-medium leading-snug line-clamp-3">
+                <p className="text-[11px] sm:text-[11.5px] text-slate-500 font-medium leading-relaxed line-clamp-2">
                   {card.desc}
                 </p>
               </div>
 
               {/* Bottom Right: Circular Arrow */}
-              <div className="mt-2.5 flex justify-end">
-                <div className={`w-5 h-5 rounded-full border ${card.arrowBorder} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                  <ArrowRight className="w-2.5 h-2.5 stroke-[2.5]" />
+              <div className="mt-3 flex justify-end">
+                <div className={`w-6 h-6 rounded-full border ${card.arrowBorder} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  <ArrowRight className="w-3 h-3 stroke-[2.5]" />
                 </div>
               </div>
             </div>
