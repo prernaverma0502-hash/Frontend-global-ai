@@ -5,7 +5,8 @@ import {
   ChevronDown,
   Globe,
   Menu,
-  X
+  X,
+  Shield
 } from 'lucide-react';
 
 export default function Header({ onNavigate }) {
@@ -233,7 +234,17 @@ export default function Header({ onNavigate }) {
               )}
             </div>
 
-            {/* 11. Profile / Sign In Button */}
+            {/* 11. Admin & Sign In Buttons */}
+            <button
+              type="button"
+              onClick={() => onNavigate ? onNavigate('/admin/dashboard') : (window.location.hash = '#admin')}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#08165B] hover:bg-[#1677E8] text-white text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer"
+              title="Open GlobalHealthAI Admin Panel"
+            >
+              <Shield className="w-3.5 h-3.5 text-[#F04B0A]" />
+              <span>Admin</span>
+            </button>
+
             <button
               type="button"
               onClick={() => onNavigate ? onNavigate('/login') : (window.location.pathname = '/login')}
@@ -248,18 +259,31 @@ export default function Header({ onNavigate }) {
           </nav>
 
           {/* Mobile hamburger for small mobile screens only */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-[#0f2d59]"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            <a
+              href="#admin"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#08165B] text-white text-xs font-bold"
+            >
+              <Shield className="w-3 h-3 text-[#F04B0A]" />
+              <span>Admin</span>
+            </a>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-[#0f2d59]"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile menu drawer for phone screens */}
         {mobileMenuOpen && (
           <div className="md:hidden py-3 border-t border-blue-100 space-y-2 bg-white text-sm font-semibold">
+            <a href="#admin" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 bg-[#08165B] text-white font-bold rounded-lg">
+              <Shield className="w-4 h-4 text-[#F04B0A]" />
+              <span>Open Admin Panel</span>
+            </a>
             <a href="#home" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-1.5 bg-[#dcecfe] text-[#0f2d59] font-bold rounded-lg">Home</a>
             <a href="#search-section" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-1.5 text-slate-700">Symptom Checker</a>
             <a href="#categories" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-1.5 text-slate-700">Categories</a>

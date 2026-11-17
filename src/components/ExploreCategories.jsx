@@ -25,7 +25,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#ef4444] text-[#ef4444]',
       cardBorder: 'border-rose-200 hover:border-rose-400',
       cardGradient: 'bg-gradient-to-b from-[#ffd6de] via-[#ffeef1] to-white',
-      image: '/assets/cat-clean-1.jpg',
+      image: '/assets/my-symptoms.jpeg?v=4',
+      objectPosition: 'right top',
       icon: ClipboardList
     },
     {
@@ -37,7 +38,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#22c55e] text-[#22c55e]',
       cardBorder: 'border-emerald-200 hover:border-emerald-400',
       cardGradient: 'bg-gradient-to-b from-[#d2f8db] via-[#ebfcf0] to-white',
-      image: '/assets/cat-clean-2.jpg',
+      image: '/assets/my-persnal-health.jpeg?v=4',
+      objectPosition: 'center top',
       icon: Sprout
     },
     {
@@ -49,7 +51,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#3b82f6] text-[#3b82f6]',
       cardBorder: 'border-blue-200 hover:border-blue-400',
       cardGradient: 'bg-gradient-to-b from-[#cfe6fe] via-[#ebf4fe] to-white',
-      image: '/assets/cat-clean-3.jpg',
+      image: '/assets/my-mans-health.jpeg?v=4',
+      objectPosition: 'center top',
       icon: () => <span className="font-black text-white text-base leading-none">♂</span>
     },
     {
@@ -61,7 +64,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#ec4899] text-[#ec4899]',
       cardBorder: 'border-pink-200 hover:border-pink-400',
       cardGradient: 'bg-gradient-to-b from-[#ffd6eb] via-[#feeff6] to-white',
-      image: '/assets/cat-clean-4.jpg',
+      image: '/assets/my-womans-health.jpeg?v=4',
+      objectPosition: 'center top',
       icon: () => <span className="font-black text-white text-base leading-none">♀</span>
     },
     {
@@ -73,7 +77,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#f97316] text-[#f97316]',
       cardBorder: 'border-amber-200 hover:border-amber-400',
       cardGradient: 'bg-gradient-to-b from-[#ffe8c7] via-[#fff5e6] to-white',
-      image: '/assets/cat-clean-5.jpg',
+      image: '/assets/my-parenting.jpeg?v=4',
+      objectPosition: 'center top',
       icon: Users
     },
     {
@@ -85,7 +90,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#22c55e] text-[#22c55e]',
       cardBorder: 'border-emerald-200 hover:border-emerald-400',
       cardGradient: 'bg-gradient-to-b from-[#d2f8db] via-[#ebfcf0] to-white',
-      image: '/assets/cat-clean-6.jpg',
+      image: '/assets/my-food-nutrition.jpeg?v=5',
+      objectPosition: 'center top',
       icon: Apple
     },
     {
@@ -97,7 +103,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#a855f7] text-[#a855f7]',
       cardBorder: 'border-purple-200 hover:border-purple-400',
       cardGradient: 'bg-gradient-to-b from-[#edd6fe] via-[#f7ebff] to-white',
-      image: '/assets/cat-clean-7.jpg',
+      image: '/assets/my-mind-emotions.jpeg?v=5',
+      objectPosition: 'right top',
       icon: Brain
     },
     {
@@ -109,7 +116,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#f97316] text-[#f97316]',
       cardBorder: 'border-orange-200 hover:border-orange-400',
       cardGradient: 'bg-gradient-to-b from-[#ffdfbe] via-[#fff2e3] to-white',
-      image: '/assets/cat-clean-8.jpg',
+      image: '/assets/my-life-stage.jpeg?v=4',
+      objectPosition: 'center top',
       icon: Milestone
     },
     {
@@ -121,7 +129,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#14b8a6] text-[#14b8a6]',
       cardBorder: 'border-teal-200 hover:border-teal-400',
       cardGradient: 'bg-gradient-to-b from-[#c0f5ec] via-[#e5faf6] to-white',
-      image: '/assets/cat-clean-9.jpg',
+      image: '/assets/my-life-style-fitness.jpeg?v=4',
+      objectPosition: 'center top',
       icon: Activity
     },
     {
@@ -133,7 +142,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#ef4444] text-[#ef4444]',
       cardBorder: 'border-rose-200 hover:border-rose-400',
       cardGradient: 'bg-gradient-to-b from-[#ffd6de] via-[#ffeef1] to-white',
-      image: '/assets/cat-clean-10.jpg',
+      image: '/assets/my-cronic-contidion.jpeg?v=4',
+      objectPosition: 'right top',
       icon: HeartPulse
     },
     {
@@ -145,7 +155,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#0ea5e9] text-[#0ea5e9]',
       cardBorder: 'border-sky-200 hover:border-sky-400',
       cardGradient: 'bg-gradient-to-b from-[#cfe6fe] via-[#ebf4fe] to-white',
-      image: '/assets/cat-clean-11.jpg',
+      image: '/assets/my-medicine-test.jpeg?v=4',
+      objectPosition: 'right top',
       icon: Pill
     },
     {
@@ -157,7 +168,8 @@ export default function ExploreCategories() {
       arrowBorder: 'border-[#a855f7] text-[#a855f7]',
       cardBorder: 'border-purple-200 hover:border-purple-400',
       cardGradient: 'bg-gradient-to-b from-[#edd6fe] via-[#f7ebff] to-white',
-      image: '/assets/cat-clean-12.jpg',
+      image: '/assets/my-special-care.jpeg?v=4',
+      objectPosition: 'center top',
       icon: Accessibility
     }
   ];
@@ -208,6 +220,7 @@ export default function ExploreCategories() {
                       width: '100%',
                       height: '110px',
                       objectFit: 'cover',
+                      objectPosition: card.objectPosition || 'center',
                       WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)',
                       maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)'
                     }}
