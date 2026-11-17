@@ -1,16 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import SymptomSearch from './components/SymptomSearch';
 import ExploreCategories from './components/ExploreCategories';
 import MiddleRow from './components/MiddleRow';
 import BottomRow from './components/BottomRow';
+import AdminLayout from './admin/components/AdminLayout';
 
 export default function App() {
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'admin'
+  const [adminScreen, setAdminScreen] = useState('dashboard');
+
+  useEffect(() => {
+    function handleHash() {
+      const hash = window.location.hash;
+      if (hash.startsWith('#admin')) {
+        setCurrentView('admin');
+        const parts = hash.split('/');
+        if (parts[1]) {
+          setAdminScreen(parts[1]);
+        }
+      } else {
+        setCurrentView('landing');
+      }
+    }
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  if (currentView === 'admin') {
+    return (
+      <AdminLayout
+        activeScreen={adminScreen}
+        setActiveScreen={(screen) => {
+          setAdminScreen(screen);
+          window.location.hash = `#admin/${screen}`;
+        }}
+        onExitToLanding={() => {
+          window.location.hash = '';
+          setCurrentView('landing');
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#f3f8fd] text-slate-800 font-sans selection:bg-blue-100 selection:text-blue-900 pb-6">
       
-      {/* 1. Header / Navigation Bar */}
+      {/* 1. Header / Navigation Bar with Admin Portal access */}
       <Header />
 
       {/* Main Page Layout matching reference */}
