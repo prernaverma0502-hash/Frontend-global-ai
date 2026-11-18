@@ -98,7 +98,7 @@ function MainRouter() {
       <Header onNavigate={navigate} />
 
       {/* Main Page Layout matching reference */}
-      <main className="space-y-1">
+      <main>
         {/* 2. Hero Section */}
         <Hero />
 
