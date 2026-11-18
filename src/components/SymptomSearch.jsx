@@ -28,22 +28,22 @@ export default function SymptomSearch({ onSearch }) {
   };
 
   return (
-    <div id="search-section" className="relative z-20 max-w-[1440px] 2xl:max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-6 xl:px-8 -mt-5 sm:-mt-6 scroll-mt-24">
+    <div id="search-section" className="relative z-20 max-w-[1440px] 2xl:max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-6 xl:px-8 -mt-6 sm:-mt-8 scroll-mt-24">
       <div className="flex flex-col lg:flex-row items-center gap-2.5 sm:gap-3 w-full">
 
         {/* Main Search Bar with embedded orange button */}
         <form
           onSubmit={handleSubmit}
-          className="relative flex-1 w-full bg-white rounded-full border border-blue-200/90 shadow-sm hover:shadow-md hover:border-blue-300 focus-within:border-[#1677E8] focus-within:shadow-md transition-all p-1.5 pl-4 sm:pl-5 flex items-center justify-between"
+          className="relative flex-1 w-full bg-white dark:bg-[#0F1C36] rounded-full border border-blue-200/90 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-slate-600 focus-within:border-[#1677E8] dark:focus-within:border-blue-500 focus-within:shadow-md transition-all p-1.5 pl-4 sm:pl-5 flex items-center justify-between"
         >
           <div className="flex items-center gap-2.5 flex-1 mr-2 min-w-0">
-            <Search className="w-4 sm:w-4.5 h-4 sm:h-4.5 text-[#1d6fd8] shrink-0 stroke-[2.3]" />
+            <Search className="w-4 sm:w-4.5 h-4 sm:h-4.5 text-[#1d6fd8] dark:text-blue-400 shrink-0 stroke-[2.3]" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="What symptom are you worried about? e.g. cough, headache, stomach pain ..."
-              className="w-full text-xs sm:text-[13px] font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none bg-transparent"
+              className="w-full text-xs sm:text-[13px] font-medium text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-400 focus:outline-none bg-transparent"
             />
           </div>
 
@@ -64,16 +64,16 @@ export default function SymptomSearch({ onSearch }) {
           <button
             type="button"
             onClick={handleVoice}
-            className={`flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white border border-blue-200 hover:border-blue-400 hover:bg-blue-50/50 shadow-2xs text-[#0f2d59] font-bold text-[11px] sm:text-xs transition-all cursor-pointer min-w-0 ${isListening ? 'ring-2 ring-blue-400 bg-blue-50' : ''
+            className={`flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white dark:bg-[#0F1C36] border border-blue-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-slate-800 shadow-2xs text-[#0f2d59] dark:text-slate-100 font-bold text-[11px] sm:text-xs transition-all cursor-pointer min-w-0 ${isListening ? 'ring-2 ring-blue-400 bg-blue-50 dark:bg-slate-800' : ''
               }`}
           >
-            <Mic className="w-3.5 h-3.5 text-[#1d6fd8] shrink-0" />
+            <Mic className="w-3.5 h-3.5 text-[#1d6fd8] dark:text-blue-400 shrink-0" />
             <span className="truncate">{isListening ? 'Listening...' : 'Voice Search'}</span>
           </button>
 
           {/* Upload Report */}
-          <label className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white border border-blue-200 hover:border-blue-400 hover:bg-blue-50/50 shadow-2xs text-[#0f2d59] font-bold text-[11px] sm:text-xs cursor-pointer transition-all min-w-0">
-            <Camera className="w-3.5 h-3.5 text-[#1d6fd8] shrink-0" />
+          <label className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white dark:bg-[#0F1C36] border border-blue-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-slate-800 shadow-2xs text-[#0f2d59] dark:text-slate-100 font-bold text-[11px] sm:text-xs cursor-pointer transition-all min-w-0">
+            <Camera className="w-3.5 h-3.5 text-[#1d6fd8] dark:text-blue-400 shrink-0" />
             <span className="truncate">{uploaded ? 'Uploaded ✓' : 'Upload'}</span>
             <input
               type="file"
@@ -90,7 +90,7 @@ export default function SymptomSearch({ onSearch }) {
           <button
             type="button"
             onClick={handleWhatsApp}
-            className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white border border-blue-200 hover:border-emerald-400 hover:bg-emerald-50/50 shadow-2xs text-[#0f2d59] font-bold text-[11px] sm:text-xs transition-all cursor-pointer min-w-0"
+            className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white dark:bg-[#0F1C36] border border-blue-200 dark:border-slate-700 hover:border-emerald-400 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/40 shadow-2xs text-[#0f2d59] dark:text-slate-100 font-bold text-[11px] sm:text-xs transition-all cursor-pointer min-w-0"
           >
             <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-[#25D366] fill-current shrink-0">
               <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.18-.544-1.785-.738-2.91-2.55-2.998-2.668-.088-.118-.724-.963-.724-1.836 0-.873.456-1.302.618-1.478.162-.177.353-.221.471-.221.118 0 .235.001.338.006.109.005.253-.042.395.3.144.348.49 1.196.534 1.285.044.089.073.192.015.309-.059.118-.088.192-.176.295-.088.103-.186.23-.265.31-.088.088-.18.184-.077.361.103.177.458.756.983 1.224.675.602 1.244.788 1.421.876.176.089.279.074.382-.044.103-.118.442-.515.559-.692.118-.176.236-.147.397-.088.162.059 1.026.484 1.202.572.176.089.294.133.338.206.044.074.044.428-.1 1.033z" />

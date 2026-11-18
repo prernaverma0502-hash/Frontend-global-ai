@@ -329,6 +329,7 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 /* Layout containers & Structural backgrounds */
 html.dark .bg-\[\#F2F7FF\],
 html.dark .bg-\[\#F8FAFC\],
+html.dark .bg-\[\#f3f8fd\],
 html.dark .bg-slate-50\/50 {
   background-color: #080D1A !important;
 }
@@ -376,7 +377,9 @@ html.dark .bg-\[\#F2F7FF\]\/60,
 html.dark .bg-\[\#F2F7FF\]\/70,
 html.dark .bg-\[\#F2F7FF\]\/80,
 html.dark .bg-\[\#F2F7FF\]\/30,
-html.dark .bg-\[\#F2F7FF\]\/40 {
+html.dark .bg-\[\#F2F7FF\]\/40,
+html.dark .bg-\[\#ebf4fd\],
+html.dark .bg-\[\#f4f9ff\] {
   background-color: #0B132B !important;
   border-color: #1E293B !important;
 }
@@ -393,6 +396,8 @@ html.dark .border-slate-200 {
 /* Brand Primary Navy Text -> Crisp High Contrast White in Dark Mode */
 html.dark .text-\[\#08165B\],
 html.dark .text-\[\#0f2d59\],
+html.dark .text-\[\#0c2340\],
+html.dark .text-\[\#1e293b\],
 html.dark .text-slate-900,
 html.dark .text-slate-800 {
   color: #FFFFFF !important;

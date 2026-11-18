@@ -93,7 +93,7 @@ function MainRouter() {
 
   // Default Route: Existing Landing Page (Preserved 100% exactly)
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[#f3f8fd] text-slate-800 font-sans selection:bg-blue-100 selection:text-blue-900 pb-6">
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#f3f8fd] dark:bg-[#080D1A] text-slate-800 dark:text-slate-100 font-sans selection:bg-blue-100 selection:text-blue-900 pb-6 transition-colors duration-200">
       {/* 1. Header / Navigation Bar with Admin & Sign In options */}
       <Header onNavigate={navigate} />
 
