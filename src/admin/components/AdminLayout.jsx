@@ -63,7 +63,7 @@ export default function AdminLayout({ activeScreen, setActiveScreen, onExitToLan
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900 transition-colors duration-200 ${
+    <div className={`h-screen w-full flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900 transition-colors duration-200 overflow-hidden ${
       isDark ? 'bg-[#080D1A] text-slate-100' : 'bg-[#F2F7FF] text-[#08165B]'
     }`}>
       
@@ -76,11 +76,11 @@ export default function AdminLayout({ activeScreen, setActiveScreen, onExitToLan
       )}
 
       {/* Admin Wrapper */}
-      <div className="flex flex-1 min-h-screen">
+      <div className="flex flex-1 h-full overflow-hidden">
 
-        {/* SIDEBAR (Desktop) */}
+        {/* SIDEBAR (Desktop) - Fixed/Stuck, will never scroll with dashboard */}
         <aside
-          className={`hidden md:flex flex-col border-r transition-all duration-300 z-30 shrink-0 sticky top-0 h-screen ${
+          className={`hidden md:flex flex-col border-r transition-all duration-300 z-30 shrink-0 h-full select-none ${
             isDark ? 'bg-[#0B132B] border-slate-800' : 'bg-white border-[#D6E6FA]'
           } ${
             sidebarCollapsed ? 'w-[76px]' : 'w-[260px]'
@@ -341,10 +341,10 @@ export default function AdminLayout({ activeScreen, setActiveScreen, onExitToLan
         )}
 
         {/* MAIN CONTENT AREA */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden">
           
           {/* Top Admin Header Bar */}
-          <header className={`h-[68px] border-b px-4 sm:px-6 lg:px-8 flex items-center justify-between shrink-0 sticky top-0 z-20 shadow-2xs transition-colors duration-200 ${
+          <header className={`h-[68px] border-b px-4 sm:px-6 lg:px-8 flex items-center justify-between shrink-0 z-20 shadow-2xs transition-colors duration-200 ${
             isDark ? 'bg-[#0B132B] border-slate-800' : 'bg-white border-[#D6E6FA]'
           }`}>
             {/* Left: Mobile hamburger + Screen title */}
@@ -452,7 +452,7 @@ export default function AdminLayout({ activeScreen, setActiveScreen, onExitToLan
           </header>
 
           {/* Screen Body */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1500px] mx-auto w-full">
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 max-w-[1500px] mx-auto w-full">
             {activeScreen === 'dashboard' && (
               <DashboardScreen navigateTo={handleNavClick} showToast={showToast} />
             )}

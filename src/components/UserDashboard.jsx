@@ -218,7 +218,7 @@ export default function UserDashboard({ onNavigate }) {
 
   return (
     <div
-      className={`min-h-screen w-full max-w-full overflow-x-hidden font-sans flex antialiased transition-colors duration-300 ${
+      className={`h-screen w-full max-w-full overflow-hidden font-sans flex antialiased transition-colors duration-300 ${
         isDark ? 'bg-[#080D1A] text-slate-100' : 'bg-[#F2F7FF] text-slate-900'
       }`}
     >
@@ -239,7 +239,7 @@ export default function UserDashboard({ onNavigate }) {
       />
 
       {/* 2. Main Workspace Layout */}
-      <div className="flex-1 flex flex-col min-w-0 w-full max-w-full overflow-x-hidden lg:pl-[260px]">
+      <div className="flex-1 flex flex-col h-full min-w-0 w-full max-w-full overflow-hidden lg:pl-[260px]">
         
         {/* Minimalist Top Bar with Ink-Bleed Theme Toggle */}
         <WorkspaceTopBar
