@@ -350,9 +350,29 @@ html.dark .bg-slate-100 {
 }
 
 html.dark .bg-blue-50\/50,
+html.dark .bg-blue-50\/60,
 html.dark .bg-blue-50\/70,
-html.dark .bg-blue-50\/30 {
+html.dark .bg-blue-50\/80,
+html.dark .bg-blue-50\/40,
+html.dark .bg-blue-50\/30,
+html.dark .bg-blue-50\/20,
+html.dark [class*="bg-blue-50/"],
+html.dark [class*="bg-slate-50/"],
+html.dark [class*="bg-slate-100/"] {
   background-color: #15274D !important;
+  border-color: #1E293B !important;
+}
+
+/* Light blue / neutral background overlays in dark mode */
+html.dark .bg-\[\#F2F7FF\],
+html.dark .bg-\[\#F2F7FF\]\/50,
+html.dark .bg-\[\#F2F7FF\]\/60,
+html.dark .bg-\[\#F2F7FF\]\/70,
+html.dark .bg-\[\#F2F7FF\]\/80,
+html.dark .bg-\[\#F2F7FF\]\/30,
+html.dark .bg-\[\#F2F7FF\]\/40 {
+  background-color: #0B132B !important;
+  border-color: #1E293B !important;
 }
 
 /* Borders */
@@ -372,6 +392,12 @@ html.dark .text-slate-800 {
   color: #FFFFFF !important;
 }
 
+/* Primary Action Blue in Dark Mode -> High-Contrast Sky Blue */
+html.dark .text-\[\#1677E8\],
+html.dark .text-blue-600 {
+  color: #60A5FA !important;
+}
+
 /* Muted / Subtitle Text */
 html.dark .text-slate-700 {
   color: #E2E8F0 !important;
@@ -380,6 +406,29 @@ html.dark .text-slate-700 {
 html.dark .text-slate-600,
 html.dark .text-slate-500 {
   color: #94A3B8 !important;
+}
+
+/* Deep Navy Action Buttons in Dark Mode -> Vibrant Blue */
+html.dark button.bg-\[\#08165B\],
+html.dark .bg-\[\#08165B\]:not(aside):not(nav) {
+  background-color: #1677E8 !important;
+  color: #FFFFFF !important;
+}
+
+html.dark button.bg-\[\#08165B\]:hover {
+  background-color: #2563EB !important;
+}
+
+/* Soft Blue Action Pills & Badges in Dark Mode */
+html.dark .bg-blue-50 {
+  background-color: rgba(30, 58, 138, 0.35) !important;
+  color: #93C5FD !important;
+}
+
+/* Border Contrasts */
+html.dark .border-slate-300,
+html.dark .border-slate-200 {
+  border-color: #334155 !important;
 }
 
 /* Inputs, Selects, and Textareas */

@@ -130,20 +130,49 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
             const ext = file.name.split('.').pop().toUpperCase();
             const tagArray = formData.tags.split(',').map(t => t.trim()).filter(Boolean);
 
-            const newDoc = addDocument({
-              title: formData.title,
-              category: formData.category,
-              sourceType: formData.sourceType,
-              fileType: ext,
-              fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-              language: formData.language,
-              description: formData.description || 'Clinical knowledge source uploaded and verified by Administrator.',
-              tags: tagArray.length > 0 ? tagArray : ['Clinical Knowledge'],
-              extractedTextSample: `Extracted from ${file.name}: Comprehensive guidelines detailing evidence-based practices, clinical recommendations, and patient safety criteria under ${formData.category}. Indexed for high-precision retrieval.`
-            });
+            // Create real Object URL for viewing the original PDF/File
+            const fileBlobUrl = URL.createObjectURL(file);
+            window.__GLOBAL_HEALTH_FILE_CACHE__ = window.__GLOBAL_HEALTH_FILE_CACHE__ || {};
 
-            setPipelineState({ step: 'completed', progress: 100, docId: newDoc.id });
-            showToast('Document successfully processed and indexed into AI Knowledge Base!');
+            const finalizeDocCreation = (dataUrl = null) => {
+              const newDoc = addDocument({
+                title: formData.title,
+                category: formData.category,
+                sourceType: formData.sourceType,
+                fileType: ext,
+                fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+                language: formData.language,
+                description: formData.description || 'Clinical knowledge source uploaded and verified by Administrator.',
+                tags: tagArray.length > 0 ? tagArray : ['Clinical Knowledge'],
+                extractedTextSample: `Extracted from ${file.name}: Comprehensive guidelines detailing evidence-based practices, clinical recommendations, and patient safety criteria under ${formData.category}. Indexed for high-precision retrieval.`,
+                fileUrl: fileBlobUrl,
+                fileDataUrl: dataUrl,
+                originalFileName: file.name
+              });
+
+              window.__GLOBAL_HEALTH_FILE_CACHE__[newDoc.id] = {
+                file,
+                url: fileBlobUrl,
+                dataUrl: dataUrl,
+                name: file.name
+              };
+
+              setPipelineState({ step: 'completed', progress: 100, docId: newDoc.id });
+              showToast('Document successfully processed and indexed into AI Knowledge Base!');
+            };
+
+            if (file.size < 3.5 * 1024 * 1024) {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                finalizeDocCreation(e.target.result);
+              };
+              reader.onerror = () => {
+                finalizeDocCreation(null);
+              };
+              reader.readAsDataURL(file);
+            } else {
+              finalizeDocCreation(null);
+            }
           }, 700);
         }, 700);
       }, 700);
@@ -167,19 +196,19 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
     <div className="max-w-[1200px] mx-auto space-y-6 sm:space-y-8 animate-in fade-in duration-300">
       
       {/* Header Info Banner */}
-      <div className="bg-white rounded-2xl p-6 border border-[#D6E6FA] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#0F1C36] rounded-2xl p-6 border border-[#D6E6FA] dark:border-slate-800 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg sm:text-xl font-black text-[#08165B] flex items-center gap-2">
-            <UploadCloud className="w-6 h-6 text-[#1677E8]" />
+          <h2 className="text-lg sm:text-xl font-black text-[#08165B] dark:text-white flex items-center gap-2">
+            <UploadCloud className="w-6 h-6 text-[#1677E8] dark:text-blue-400" />
             <span>Upload Healthcare Knowledge Document</span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-300 font-medium mt-1">
             All documents uploaded by the Administrator are automatically verified and indexed as approved knowledge sources.
           </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold flex items-center gap-1.5">
+          <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-xs font-bold flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5" />
             Auto-Approved Knowledge
           </span>
@@ -198,10 +227,10 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current && fileInputRef.current.click()}
-            className={`border-2 border-dashed rounded-2xl p-6 sm:p-8 text-center transition-all cursor-pointer bg-white flex flex-col items-center justify-center min-h-[240px] ${
+            className={`border-2 border-dashed rounded-2xl p-6 sm:p-8 text-center transition-all cursor-pointer bg-white dark:bg-[#0F1C36] flex flex-col items-center justify-center min-h-[240px] ${
               isDragging
-                ? 'border-[#1677E8] bg-blue-50/60 scale-[1.01]'
-                : 'border-[#D6E6FA] hover:border-[#1677E8] hover:bg-blue-50/20'
+                ? 'border-[#1677E8] bg-blue-50/60 dark:bg-[#15274D] scale-[1.01]'
+                : 'border-[#D6E6FA] dark:border-slate-800 hover:border-[#1677E8] dark:hover:border-blue-400 hover:bg-blue-50/20 dark:hover:bg-slate-800/40'
             }`}
           >
             <input
@@ -213,19 +242,19 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
               className="hidden"
             />
             
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 text-[#1677E8] flex items-center justify-center mb-3 shadow-xs">
+            <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-900/50 text-[#1677E8] dark:text-blue-400 flex items-center justify-center mb-3 shadow-xs">
               <UploadCloud className="w-7 h-7 stroke-[2.2]" />
             </div>
 
-            <div className="text-sm font-black text-[#08165B] mb-1">
+            <div className="text-sm font-black text-[#08165B] dark:text-white mb-1">
               Drag & Drop your document here
             </div>
             
-            <div className="text-xs text-slate-500 mb-3">
-              or <span className="text-[#1677E8] font-bold underline">browse files</span> from your computer
+            <div className="text-xs text-slate-500 dark:text-slate-400 mb-3">
+              or <span className="text-[#1677E8] dark:text-blue-400 font-bold underline">browse files</span> from your computer
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
+            <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-400 dark:text-slate-300 bg-slate-50 dark:bg-[#0B132B] px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800">
               <span>Supports PDF, DOCX, TXT</span>
               <span>•</span>
               <span>Max {settings.systemLimits?.maxFileSizeMB || 50} MB</span>
@@ -234,22 +263,22 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
 
           {/* Selected File List */}
           {files.length > 0 && (
-            <div className="bg-white rounded-2xl p-4 border border-[#D6E6FA] shadow-xs space-y-2">
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center justify-between">
+            <div className="bg-white dark:bg-[#0F1C36] rounded-2xl p-4 border border-[#D6E6FA] dark:border-slate-800 shadow-xs space-y-2">
+              <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
                 <span>Selected Documents ({files.length})</span>
-                <span className="text-emerald-600 font-bold text-[11px]">Ready for extraction</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">Ready for extraction</span>
               </div>
 
               {files.map((file, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/50 border border-blue-100 text-xs"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/50 dark:bg-[#0B132B] border border-blue-100 dark:border-slate-800 text-xs"
                 >
                   <div className="flex items-center gap-2.5 truncate">
-                    <FileText className="w-4 h-4 text-[#1677E8] shrink-0" />
+                    <FileText className="w-4 h-4 text-[#1677E8] dark:text-blue-400 shrink-0" />
                     <div className="truncate">
-                      <div className="font-bold text-[#08165B] truncate">{file.name}</div>
-                      <div className="text-[10px] text-slate-400">
+                      <div className="font-bold text-[#08165B] dark:text-white truncate">{file.name}</div>
+                      <div className="text-[10px] text-slate-400 dark:text-slate-400">
                         {(file.size / (1024 * 1024)).toFixed(2)} MB • {file.name.split('.').pop().toUpperCase()}
                       </div>
                     </div>
@@ -270,12 +299,12 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
           )}
 
           {/* Guidelines Box */}
-          <div className="bg-blue-50/60 rounded-2xl p-4 border border-blue-100 text-xs text-slate-600 space-y-1.5">
-            <div className="font-bold text-[#08165B] flex items-center gap-1.5">
-              <Info className="w-3.5 h-3.5 text-[#1677E8]" />
+          <div className="bg-blue-50/60 dark:bg-[#0B132B] rounded-2xl p-4 border border-blue-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-200 space-y-1.5">
+            <div className="font-bold text-[#08165B] dark:text-white flex items-center gap-1.5">
+              <Info className="w-3.5 h-3.5 text-[#1677E8] dark:text-blue-400" />
               <span>Indexing Standards</span>
             </div>
-            <p className="text-[11px] leading-relaxed">
+            <p className="text-[11px] text-slate-500 dark:text-slate-300 leading-relaxed">
               Text is automatically extracted, segmented into 500-token semantic chunks with 50-token overlap, and vectorized using medical domain embeddings.
             </p>
           </div>
@@ -283,10 +312,10 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
         </div>
 
         {/* Right Column (7 cols): Document Metadata Form */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-[#D6E6FA] shadow-xs space-y-5">
-          <div className="border-b border-slate-100 pb-3">
-            <h3 className="text-base font-black text-[#08165B]">Document Metadata & Taxonomy</h3>
-            <p className="text-xs text-slate-500 font-medium">
+        <div className="lg:col-span-7 bg-white dark:bg-[#0F1C36] rounded-2xl p-6 sm:p-8 border border-[#D6E6FA] dark:border-slate-800 shadow-xs space-y-5">
+          <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h3 className="text-base font-black text-[#08165B] dark:text-white">Document Metadata & Taxonomy</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-300 font-medium">
               Provide clinical categorization so the AI retrieval engine can filter by relevant domain.
             </p>
           </div>
@@ -294,7 +323,7 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
           <div className="space-y-4 text-xs">
             {/* Title */}
             <div>
-              <label className="block font-bold text-[#08165B] mb-1.5">
+              <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1.5">
                 Document Title <span className="text-rose-500">*</span>
               </label>
               <input
@@ -302,45 +331,45 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 placeholder="e.g. Clinical Practice Guidelines for Adult Diabetes 2026"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] focus:border-[#1677E8] focus:ring-2 focus:ring-blue-100 outline-none text-xs sm:text-sm text-[#08165B] font-medium"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] dark:border-slate-700 bg-white dark:bg-[#0B132B] focus:border-[#1677E8] dark:focus:border-blue-400 outline-none text-xs sm:text-sm text-[#08165B] dark:text-white font-medium"
               />
             </div>
 
             {/* Category & Source Type Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block font-bold text-[#08165B] mb-1.5">
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1.5">
                   Medical Category <span className="text-rose-500">*</span>
                 </label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] focus:border-[#1677E8] outline-none text-xs sm:text-sm text-[#08165B] font-medium bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] dark:border-slate-700 focus:border-[#1677E8] dark:focus:border-blue-400 outline-none text-xs sm:text-sm text-[#08165B] dark:text-white font-medium bg-white dark:bg-[#0B132B]"
                 >
-                  <option value="Health Guidelines">Health Guidelines</option>
-                  <option value="Medical Research">Medical Research</option>
-                  <option value="Educational Content">Educational Content</option>
-                  <option value="Clinical Practice">Clinical Practice</option>
-                  <option value="Pharmacology">Pharmacology</option>
-                  <option value="Other Content">Other Content</option>
+                  <option value="Health Guidelines" className="dark:bg-[#0B132B] dark:text-white">Health Guidelines</option>
+                  <option value="Medical Research" className="dark:bg-[#0B132B] dark:text-white">Medical Research</option>
+                  <option value="Educational Content" className="dark:bg-[#0B132B] dark:text-white">Educational Content</option>
+                  <option value="Clinical Practice" className="dark:bg-[#0B132B] dark:text-white">Clinical Practice</option>
+                  <option value="Pharmacology" className="dark:bg-[#0B132B] dark:text-white">Pharmacology</option>
+                  <option value="Other Content" className="dark:bg-[#0B132B] dark:text-white">Other Content</option>
                 </select>
               </div>
 
               <div>
-                <label className="block font-bold text-[#08165B] mb-1.5">
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1.5">
                   Source Type <span className="text-rose-500">*</span>
                 </label>
                 <select
                   value={formData.sourceType}
                   onChange={(e) => setFormData({ ...formData, sourceType: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] focus:border-[#1677E8] outline-none text-xs sm:text-sm text-[#08165B] font-medium bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] dark:border-slate-700 focus:border-[#1677E8] dark:focus:border-blue-400 outline-none text-xs sm:text-sm text-[#08165B] dark:text-white font-medium bg-white dark:bg-[#0B132B]"
                 >
-                  <option value="WHO Guideline">WHO Guideline</option>
-                  <option value="Clinical Protocol">Clinical Protocol</option>
-                  <option value="Research Journal">Research Journal</option>
-                  <option value="Hospital Manual">Hospital Manual</option>
-                  <option value="Government Health Advisory">Government Health Advisory</option>
-                  <option value="Textbook / Reference">Textbook / Reference</option>
+                  <option value="WHO Guideline" className="dark:bg-[#0B132B] dark:text-white">WHO Guideline</option>
+                  <option value="Clinical Protocol" className="dark:bg-[#0B132B] dark:text-white">Clinical Protocol</option>
+                  <option value="Research Journal" className="dark:bg-[#0B132B] dark:text-white">Research Journal</option>
+                  <option value="Hospital Manual" className="dark:bg-[#0B132B] dark:text-white">Hospital Manual</option>
+                  <option value="Government Health Advisory" className="dark:bg-[#0B132B] dark:text-white">Government Health Advisory</option>
+                  <option value="Textbook / Reference" className="dark:bg-[#0B132B] dark:text-white">Textbook / Reference</option>
                 </select>
               </div>
             </div>
@@ -348,40 +377,40 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
             {/* Language & Tags Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block font-bold text-[#08165B] mb-1.5">Language</label>
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1.5">Language</label>
                 <select
                   value={formData.language}
                   onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] focus:border-[#1677E8] outline-none text-xs sm:text-sm text-[#08165B] font-medium bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] dark:border-slate-700 focus:border-[#1677E8] dark:focus:border-blue-400 outline-none text-xs sm:text-sm text-[#08165B] dark:text-white font-medium bg-white dark:bg-[#0B132B]"
                 >
-                  <option value="English">English</option>
-                  <option value="Hindi">Hindi (हिंदी)</option>
-                  <option value="Marathi">Marathi (मराठी)</option>
-                  <option value="Spanish">Spanish (Español)</option>
+                  <option value="English" className="dark:bg-[#0B132B] dark:text-white">English</option>
+                  <option value="Hindi" className="dark:bg-[#0B132B] dark:text-white">Hindi (हिंदी)</option>
+                  <option value="Marathi" className="dark:bg-[#0B132B] dark:text-white">Marathi (मराठी)</option>
+                  <option value="Spanish" className="dark:bg-[#0B132B] dark:text-white">Spanish (Español)</option>
                 </select>
               </div>
 
               <div>
-                <label className="block font-bold text-[#08165B] mb-1.5">Tags / Keywords</label>
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1.5">Tags / Keywords</label>
                 <input
                   type="text"
                   value={formData.tags}
                   onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                   placeholder="Comma-separated tags (e.g. Cardiology, BP, Adult)"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] focus:border-[#1677E8] outline-none text-xs sm:text-sm text-[#08165B] font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] dark:border-slate-700 bg-white dark:bg-[#0B132B] focus:border-[#1677E8] dark:focus:border-blue-400 outline-none text-xs sm:text-sm text-[#08165B] dark:text-white font-medium"
                 />
               </div>
             </div>
 
             {/* Description */}
             <div>
-              <label className="block font-bold text-[#08165B] mb-1.5">Description (Optional)</label>
+              <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1.5">Description (Optional)</label>
               <textarea
                 rows={3}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Brief summary of document clinical scope and audience..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] focus:border-[#1677E8] outline-none text-xs sm:text-sm text-[#08165B] font-medium resize-none"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#D6E6FA] dark:border-slate-700 bg-white dark:bg-[#0B132B] focus:border-[#1677E8] dark:focus:border-blue-400 outline-none text-xs sm:text-sm text-[#08165B] dark:text-white font-medium resize-none"
               ></textarea>
             </div>
 
@@ -394,7 +423,7 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
                 className={`w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
                   files.length > 0
                     ? 'bg-[#1677E8] hover:bg-[#08165B] text-white shadow-md shadow-blue-500/20'
-                    : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed'
                 }`}
               >
                 <UploadCloud className="w-5 h-5 stroke-[2.2]" />
@@ -404,13 +433,13 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
 
             {/* PROCESSING PIPELINE STATUS DISPLAY */}
             {pipelineState && (
-              <div className="p-5 rounded-2xl bg-[#F2F7FF] border border-[#D6E6FA] space-y-4 animate-in fade-in">
+              <div className="p-5 rounded-2xl bg-[#F2F7FF] dark:bg-[#0B132B] border border-[#D6E6FA] dark:border-slate-800 space-y-4 animate-in fade-in">
                 <div className="flex items-center justify-between">
-                  <span className="font-black text-[#08165B] text-sm flex items-center gap-2">
+                  <span className="font-black text-[#08165B] dark:text-white text-sm flex items-center gap-2">
                     {pipelineState.step === 'completed' ? (
                       <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                     ) : (
-                      <RefreshCw className="w-5 h-5 text-[#1677E8] animate-spin" />
+                      <RefreshCw className="w-5 h-5 text-[#1677E8] dark:text-blue-400 animate-spin" />
                     )}
                     <span>
                       {pipelineState.step === 'validating' && 'Stage 1/4: File Validation & Security Scan...'}
@@ -420,7 +449,7 @@ export default function UploadDocumentScreen({ navigateTo, showToast }) {
                       {pipelineState.step === 'completed' && 'Processing Complete! Available to AI.'}
                     </span>
                   </span>
-                  <span className="font-black text-[#1677E8] text-sm">{pipelineState.progress}%</span>
+                  <span className="font-black text-[#1677E8] dark:text-blue-400 text-sm">{pipelineState.progress}%</span>
                 </div>
 
                 {/* Progress Bar */}

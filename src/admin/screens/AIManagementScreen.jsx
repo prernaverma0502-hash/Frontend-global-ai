@@ -145,19 +145,19 @@ export default function AIManagementScreen({ navigateTo, showToast }) {
     <div className="space-y-6 animate-in fade-in duration-300">
       
       {/* Header Banner */}
-      <div className="bg-white rounded-2xl p-6 border border-[#D6E6FA] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#0F1C36] rounded-2xl p-6 border border-[#D6E6FA] dark:border-slate-800 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg sm:text-xl font-black text-[#08165B] flex items-center gap-2">
-            <Cpu className="w-6 h-6 text-[#1677E8]" />
+          <h2 className="text-lg sm:text-xl font-black text-[#08165B] dark:text-white flex items-center gap-2">
+            <Cpu className="w-6 h-6 text-[#1677E8] dark:text-blue-400" />
             <span>AI Knowledge & Model Management</span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-300 font-medium mt-1">
             Configure LLM parameters, monitor vector embeddings, enforce medical safety, and test evidence-grounded responses.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="px-3 py-1 rounded-full bg-blue-50 text-[#1677E8] border border-blue-200 text-xs font-bold flex items-center gap-1.5">
+          <span className="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/50 text-[#1677E8] dark:text-blue-300 border border-blue-200 dark:border-blue-700/60 text-xs font-bold flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             {aiConfig.model}
           </span>
@@ -165,16 +165,16 @@ export default function AIManagementScreen({ navigateTo, showToast }) {
       </div>
 
       {/* INTERNAL TABS: EXACTLY 5 TABS */}
-      <div className="bg-white rounded-2xl border border-[#D6E6FA] shadow-xs overflow-hidden">
+      <div className="bg-white dark:bg-[#0F1C36] rounded-2xl border border-[#D6E6FA] dark:border-slate-800 shadow-xs overflow-hidden">
         
         {/* Tab Buttons Bar */}
-        <div className="flex border-b border-[#D6E6FA] overflow-x-auto bg-[#F2F7FF]/50 text-xs sm:text-sm font-bold text-slate-600">
+        <div className="flex border-b border-[#D6E6FA] dark:border-slate-800 overflow-x-auto bg-[#F2F7FF]/50 dark:bg-[#080D1A] text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300">
           <button
             onClick={() => setActiveTab('model')}
             className={`py-3.5 px-4 sm:px-6 flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
               activeTab === 'model'
-                ? 'border-[#1677E8] text-[#1677E8] bg-white'
-                : 'border-transparent hover:text-[#08165B]'
+                ? 'border-[#1677E8] text-[#1677E8] dark:text-blue-400 bg-white dark:bg-[#0F1C36]'
+                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#08165B] dark:hover:text-white hover:bg-white/40 dark:hover:bg-slate-800/40'
             }`}
           >
             <Cpu className="w-4 h-4" />
@@ -185,8 +185,8 @@ export default function AIManagementScreen({ navigateTo, showToast }) {
             onClick={() => setActiveTab('knowledge')}
             className={`py-3.5 px-4 sm:px-6 flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
               activeTab === 'knowledge'
-                ? 'border-[#1677E8] text-[#1677E8] bg-white'
-                : 'border-transparent hover:text-[#08165B]'
+                ? 'border-[#1677E8] text-[#1677E8] dark:text-blue-400 bg-white dark:bg-[#0F1C36]'
+                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#08165B] dark:hover:text-white hover:bg-white/40 dark:hover:bg-slate-800/40'
             }`}
           >
             <Database className="w-4 h-4" />
@@ -197,8 +197,8 @@ export default function AIManagementScreen({ navigateTo, showToast }) {
             onClick={() => setActiveTab('retrieval')}
             className={`py-3.5 px-4 sm:px-6 flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
               activeTab === 'retrieval'
-                ? 'border-[#1677E8] text-[#1677E8] bg-white'
-                : 'border-transparent hover:text-[#08165B]'
+                ? 'border-[#1677E8] text-[#1677E8] dark:text-blue-400 bg-white dark:bg-[#0F1C36]'
+                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#08165B] dark:hover:text-white hover:bg-white/40 dark:hover:bg-slate-800/40'
             }`}
           >
             <Sliders className="w-4 h-4" />
@@ -209,8 +209,8 @@ export default function AIManagementScreen({ navigateTo, showToast }) {
             onClick={() => setActiveTab('safety')}
             className={`py-3.5 px-4 sm:px-6 flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
               activeTab === 'safety'
-                ? 'border-[#1677E8] text-[#1677E8] bg-white'
-                : 'border-transparent hover:text-[#08165B]'
+                ? 'border-[#1677E8] text-[#1677E8] dark:text-blue-400 bg-white dark:bg-[#0F1C36]'
+                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#08165B] dark:hover:text-white hover:bg-white/40 dark:hover:bg-slate-800/40'
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
@@ -221,8 +221,8 @@ export default function AIManagementScreen({ navigateTo, showToast }) {
             onClick={() => setActiveTab('playground')}
             className={`py-3.5 px-4 sm:px-6 flex items-center gap-2 border-b-2 whitespace-nowrap transition-all cursor-pointer ${
               activeTab === 'playground'
-                ? 'border-[#F04B0A] text-[#F04B0A] bg-white'
-                : 'border-transparent hover:text-[#F04B0A]'
+                ? 'border-[#F04B0A] text-[#F04B0A] dark:text-orange-400 bg-white dark:bg-[#0F1C36]'
+                : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#F04B0A] dark:hover:text-orange-400 hover:bg-white/40 dark:hover:bg-slate-800/40'
             }`}
           >
             <Play className="w-4 h-4" />

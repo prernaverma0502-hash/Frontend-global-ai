@@ -13,12 +13,17 @@ import {
   Sparkles,
   Stethoscope,
   BookOpen,
-  Award
+  Award,
+  User,
+  X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import ThemeToggle from './common/ThemeToggle';
 
 export default function LoginPage({ onNavigate }) {
-  const { login } = useAuth();
+  const { login, register } = useAuth();
+  const { isDark } = useTheme();
 
   // Role: 'admin' | 'user'
   const [selectedRole, setSelectedRole] = useState('admin');
@@ -28,6 +33,18 @@ export default function LoginPage({ onNavigate }) {
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Register Modal State
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [regName, setRegName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [regConfirmPassword, setRegConfirmPassword] = useState('');
+  const [regRole, setRegRole] = useState('user');
+  const [showRegPassword, setShowRegPassword] = useState(false);
+  const [regLoading, setRegLoading] = useState(false);
+  const [regError, setRegError] = useState('');
+  const [regSuccess, setRegSuccess] = useState(false);
 
   // Auto-populate credentials when switching roles
   const handleRoleChange = (role) => {
@@ -53,7 +70,6 @@ export default function LoginPage({ onNavigate }) {
 
     setIsLoading(true);
 
-    // Simulate authenticating
     setTimeout(async () => {
       const result = await login(email, password, selectedRole);
       setIsLoading(false);
@@ -66,6 +82,48 @@ export default function LoginPage({ onNavigate }) {
         }
       } else {
         setErrorMessage(result.error);
+      }
+    }, 600);
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    setRegError('');
+
+    if (!regName.trim() || !regEmail.trim() || !regPassword.trim()) {
+      setRegError('Please complete all required fields.');
+      return;
+    }
+
+    if (regPassword.length < 6) {
+      setRegError('Password must be at least 6 characters.');
+      return;
+    }
+
+    if (regPassword !== regConfirmPassword) {
+      setRegError('Passwords do not match.');
+      return;
+    }
+
+    setRegLoading(true);
+
+    setTimeout(async () => {
+      const result = await register(regName, regEmail, regPassword, regRole);
+      setRegLoading(false);
+
+      if (result.success) {
+        setRegSuccess(true);
+        setTimeout(() => {
+          setShowRegisterModal(false);
+          if (onNavigate) {
+            onNavigate(result.redirect);
+          } else {
+            window.history.pushState({}, '', result.redirect);
+            window.dispatchEvent(new PopStateEvent('popstate'));
+          }
+        }, 800);
+      } else {
+        setRegError(result.error);
       }
     }, 700);
   };
@@ -89,159 +147,79 @@ export default function LoginPage({ onNavigate }) {
     { top: '92%', left: '66%', size: 'w-1 h-1', delay: '1.2s', dur: '8s' },
     { top: '6%', left: '75%', size: 'w-1.5 h-1.5', delay: '3.1s', dur: '10s' },
     { top: '50%', left: '46%', size: 'w-2 h-2', delay: '2s', dur: '12s' },
-    { top: '74%', left: '6%', size: 'w-1.5 h-1.5', delay: '1.6s', dur: '9s' },
+    { top: '74%', left: '6%', size: 'w-1.5 h-1.5', delay: '1.6s', dur: '9s' }
   ];
 
   return (
-    <div className="min-h-screen w-full relative flex items-center justify-center p-4 sm:p-6 lg:p-10 overflow-hidden font-sans antialiased bg-gradient-to-br from-[#EEF5FF] via-[#F6FAFF] to-[#E5F0FF] animate-bg-shift selection:bg-blue-100 selection:text-blue-900">
-      
-      {/* =========================================================================
-          1. LIGHT THEME ANIMATED BACKGROUND (NO IMAGES, NO DOCTORS, NO VIDEOS)
-         ========================================================================= */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        
-        {/* Soft Radial Ambient Base Mesh */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-blue-100/40 via-transparent to-sky-100/30" />
+    <div
+      className={`h-screen max-h-screen w-full relative flex items-center justify-center p-3 sm:p-5 lg:p-6 overflow-y-auto lg:overflow-hidden font-sans antialiased transition-colors duration-300 selection:bg-blue-100 selection:text-blue-900 ${
+        isDark
+          ? 'bg-gradient-to-br from-[#080D1A] via-[#0B132B] to-[#040814] text-slate-100'
+          : 'bg-gradient-to-br from-[#EEF5FF] via-[#F6FAFF] to-[#E5F0FF] text-[#08165B]'
+      }`}
+    >
+      {/* Top Floating Controls: Back button & Dark/Light Mode Toggle */}
+      <div className="absolute top-3 sm:top-5 left-3 sm:left-6 right-3 sm:right-6 z-30 flex items-center justify-between pointer-events-auto">
+        <button
+          type="button"
+          onClick={() => onNavigate ? onNavigate('/') : (window.location.pathname = '/')}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-2xs hover:shadow-xs cursor-pointer ${
+            isDark
+              ? 'bg-slate-800/80 hover:bg-slate-800 border-slate-700 text-slate-200'
+              : 'bg-white/90 hover:bg-white border-blue-200 text-[#08165B]'
+          }`}
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to Homepage</span>
+        </button>
 
-        {/* --- FLOATING BLURRED GRADIENT ORBS (Light Theme) --- */}
-        {/* Orb 1: Medical Blue (#1677E8) Top-Left */}
-        <div className="absolute -top-28 -left-24 w-[560px] h-[560px] rounded-full bg-[#1677E8]/16 blur-[120px] animate-orb-1" />
+        {/* Global Dark/Light Mode Toggle */}
+        <ThemeToggle variant="topbar" />
+      </div>
 
-        {/* Orb 2: Radiant Cyan / Sky Blue Center-Right */}
-        <div className="absolute top-1/4 -right-20 w-[500px] h-[500px] rounded-full bg-[#38bdf8]/20 blur-[125px] animate-orb-2" />
+      {/* 1. ANIMATED BACKGROUND PARTICLES & GRADIENTS */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        <div className={`absolute -top-32 -left-32 w-96 h-96 rounded-full blur-3xl ${
+          isDark ? 'bg-blue-900/20' : 'bg-blue-300/20'
+        }`} />
+        <div className={`absolute -bottom-32 -right-32 w-96 h-96 rounded-full blur-3xl ${
+          isDark ? 'bg-cyan-900/20' : 'bg-cyan-300/20'
+        }`} />
+        <div className={`absolute top-1/2 left-1/3 -translate-y-1/2 w-[550px] h-[550px] rounded-full border pointer-events-none ${
+          isDark ? 'border-blue-900/30 opacity-30' : 'border-blue-200/40 opacity-40'
+        }`} />
+        <div className={`absolute top-1/2 left-1/3 -translate-y-1/2 w-[350px] h-[350px] rounded-full border pointer-events-none ${
+          isDark ? 'border-blue-900/40 opacity-40' : 'border-blue-200/50 opacity-50'
+        }`} />
 
-        {/* Orb 3: Subtle Warm Orange Ambient Warmth Bottom-Center */}
-        <div className="absolute -bottom-32 left-1/4 w-[450px] h-[450px] rounded-full bg-[#F04B0A]/12 blur-[120px] animate-orb-3" />
-
-        {/* Orb 4: Soft Indigo Floating Bottom-Right */}
-        <div className="absolute -bottom-20 -right-20 w-[580px] h-[580px] rounded-full bg-[#6366f1]/12 blur-[130px] animate-orb-4" />
-
-        {/* --- ABSTRACT FLOWING CURVED LINES & SOFT LIGHT WAVES (SVG) --- */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-45">
-          {/* Wave Layer 1 */}
-          <svg
-            className="absolute w-[160%] h-[120%] -left-[30%] top-0 animate-wave-1"
-            viewBox="0 0 1440 900"
-            fill="none"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M-100,320 C240,480 480,180 820,380 C1160,580 1380,260 1600,420 L1600,900 L-100,900 Z"
-              fill="url(#lightWaveGrad1)"
-              opacity="0.65"
-            />
-            <defs>
-              <linearGradient id="lightWaveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#1677E8" stopOpacity="0.18" />
-                <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.12" />
-                <stop offset="100%" stopColor="#c7ddff" stopOpacity="0.0" />
-              </linearGradient>
-            </defs>
-          </svg>
-
-          {/* Wave Layer 2 */}
-          <svg
-            className="absolute w-[150%] h-[130%] -left-[20%] -top-[10%] animate-wave-2"
-            viewBox="0 0 1440 900"
-            fill="none"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M-50,580 C260,390 620,680 960,490 C1300,300 1460,520 1620,440"
-              stroke="url(#flowingCurveGradLight)"
-              strokeWidth="2.5"
-              strokeDasharray="6 4"
-              opacity="0.4"
-            />
-            <path
-              d="M-50,540 C280,360 640,650 980,460 C1320,270 1480,490 1640,410"
-              stroke="url(#flowingCurveGradLight)"
-              strokeWidth="1.5"
-              opacity="0.5"
-            />
-            <defs>
-              <linearGradient id="flowingCurveGradLight" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#1677E8" stopOpacity="0.0" />
-                <stop offset="30%" stopColor="#1677E8" stopOpacity="0.5" />
-                <stop offset="70%" stopColor="#0284c7" stopOpacity="0.4" />
-                <stop offset="90%" stopColor="#F04B0A" stopOpacity="0.45" />
-                <stop offset="100%" stopColor="#1677E8" stopOpacity="0.0" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-
-        {/* --- SUBTLE ANIMATED GLOWING CONCENTRIC CIRCLES & GEOMETRIC SHAPES --- */}
-        {/* Large Decorative Geometric Ring Behind Left Branding */}
-        <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] rounded-full border border-[#1677E8]/18 animate-geo-spin pointer-events-none hidden md:block">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#1677E8] shadow-[0_0_10px_#1677E8]" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#38bdf8] shadow-[0_0_10px_#38bdf8]" />
-          <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#F04B0A] shadow-[0_0_10px_#F04B0A]" />
-        </div>
-
-        {/* Inner Counter-Rotating Dashed Circle */}
-        <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border border-dashed border-[#1677E8]/20 animate-geo-spin-reverse pointer-events-none hidden md:block" />
-
-        {/* Breathing Center Core Glow */}
-        <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] rounded-full bg-blue-400/10 blur-2xl animate-pulse-glow pointer-events-none" />
-
-        {/* --- SLOWLY MOVING GLOWING PARTICLES --- */}
-        {particles.map((p, idx) => (
-          <div
-            key={idx}
-            className={`absolute ${p.size} rounded-full bg-[#1677E8]/40 shadow-[0_0_6px_rgba(22,119,232,0.5)]`}
+        {particles.map((p, i) => (
+          <span
+            key={i}
+            className={`absolute rounded-full ${p.size} ${isDark ? 'bg-blue-400/20' : 'bg-blue-500/30'}`}
             style={{
               top: p.top,
               left: p.left,
               animation: `particleDriftUp ${p.dur} ease-in-out infinite`,
-              animationDelay: p.delay,
+              animationDelay: p.delay
             }}
           />
         ))}
-
-        {/* Subtle Healthcare Micro-Dot Matrix */}
-        <div 
-          className="absolute inset-0 opacity-[0.05]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #08165B 1px, transparent 1px)',
-            backgroundSize: '36px 36px'
-          }}
-        />
-
       </div>
 
-      {/* =========================================================================
-          2. SPLIT-SCREEN CONTENT CONTAINER
-         ========================================================================= */}
-      <div className="relative z-10 w-full max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      {/* 2. MAIN 2-COLUMN VIEWPORT-FITTING CONTAINER */}
+      <div className="relative z-10 w-full max-w-[1240px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-center my-auto pt-10 sm:pt-6 lg:pt-0">
         
-        {/* ================= LEFT SIDE: BRANDING & CLINICAL AUTHORITY ================= */}
-        <div className="lg:col-span-6 flex flex-col justify-center space-y-6 lg:pr-4">
+        {/* ================= LEFT SIDE: BRANDING & CLINICAL INTEL ================= */}
+        <div className="lg:col-span-6 space-y-3 sm:space-y-4">
           
-          {/* Back to Home Button */}
-          <div>
-            <button
-              type="button"
-              onClick={() => onNavigate ? onNavigate('/') : (window.location.pathname = '/')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 hover:bg-white text-[#08165B] border border-[#D6E6FA] text-xs font-semibold backdrop-blur-md shadow-2xs hover:shadow-xs transition-all duration-200 cursor-pointer group"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 text-[#1677E8] group-hover:-translate-x-1 transition-transform" />
-              <span>Back to Homepage</span>
-            </button>
-          </div>
-
-          {/* Brand Logo & Medical Emblem (Exact Landing Page Brand Identity) */}
-          <div className="flex items-center gap-3.5 cursor-pointer" onClick={() => onNavigate && onNavigate('/')}>
-            {/* Globe + Medical Cross SVG Emblem */}
-            <div className="relative w-12 h-12 flex items-center justify-center shrink-0 drop-shadow-sm">
-              <svg viewBox="0 0 40 40" className="w-12 h-12" fill="none">
+          {/* Brand Logo & Medical Emblem */}
+          <div className="flex items-center gap-3 cursor-pointer select-none" onClick={() => onNavigate && onNavigate('/')}>
+            <div className="relative w-10 h-10 flex items-center justify-center shrink-0 drop-shadow-xs">
+              <svg viewBox="0 0 40 40" className="w-10 h-10" fill="none">
                 <circle cx="20" cy="20" r="18" fill="#1677E8" />
                 <path d="M20 2C10.06 2 2 10.06 2 20s8.06 18 18 18 18-8.06 18-18S29.94 2 20 2z" stroke="#08165B" strokeWidth="1.5" />
                 <ellipse cx="20" cy="20" rx="9" ry="18" stroke="#ffffff" strokeWidth="1.2" opacity="0.85" />
                 <line x1="2" y1="20" x2="38" y2="20" stroke="#ffffff" strokeWidth="1.2" opacity="0.85" />
-                <line x1="5" y1="11" x2="35" y2="11" stroke="#ffffff" strokeWidth="1" opacity="0.65" />
-                <line x1="5" y1="29" x2="35" y2="29" stroke="#ffffff" strokeWidth="1" opacity="0.65" />
-                {/* Gold/Orange Cross */}
                 <rect x="16" y="8" width="8" height="24" rx="2" fill="#F04B0A" stroke="#ffffff" strokeWidth="1" />
                 <rect x="8" y="16" width="24" height="8" rx="2" fill="#F04B0A" stroke="#ffffff" strokeWidth="1" />
               </svg>
@@ -249,57 +227,86 @@ export default function LoginPage({ onNavigate }) {
 
             <div className="flex flex-col">
               <div className="flex items-center leading-none">
-                <span className="text-[28px] sm:text-[32px] font-black text-[#08165B] tracking-tight">GlobalHealth</span>
-                <span className="text-[28px] sm:text-[32px] font-black text-[#F04B0A] tracking-tight ml-0.5">AI</span>
-                <span className="text-[12px] font-bold text-[#F04B0A] ml-0.5 align-super">™</span>
+                <span className={`text-[24px] sm:text-[27px] font-black tracking-tight ${
+                  isDark ? 'text-white' : 'text-[#08165B]'
+                }`}>
+                  GlobalHealth
+                </span>
+                <span className="text-[24px] sm:text-[27px] font-black text-[#F04B0A] tracking-tight ml-0.5">AI</span>
+                <span className="text-[11px] font-bold text-[#F04B0A] ml-0.5 align-super">™</span>
               </div>
-              <div className="text-[8.5px] sm:text-[9.5px] font-bold text-[#08165B] tracking-wider uppercase mt-0.5">
+              <div className={`text-[7.5px] sm:text-[8.5px] font-bold tracking-wider uppercase mt-0.5 ${
+                isDark ? 'text-slate-300' : 'text-[#08165B]'
+              }`}>
                 SYMPTOM EDUCATION <span className="text-[#F04B0A]">•</span> CLINICAL GUIDANCE <span className="text-[#F04B0A]">•</span> SAFE NEXT STEPS
               </div>
             </div>
           </div>
 
-          {/* Hero Headlines (Landing Page Typography) */}
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#08165B] tracking-tight leading-[1.15]">
+          {/* Hero Headlines */}
+          <div className="space-y-1 sm:space-y-1.5">
+            <h1 className={`text-2xl sm:text-3xl lg:text-[38px] font-black tracking-tight leading-[1.15] ${
+              isDark ? 'text-white' : 'text-[#08165B]'
+            }`}>
               Your Health, <br className="hidden sm:inline" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#08165B] via-[#1677E8] to-[#08165B]">
+              <span className={
+                isDark
+                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-sky-200 to-indigo-300'
+                  : 'text-transparent bg-clip-text bg-gradient-to-r from-[#08165B] via-[#1677E8] to-[#08165B]'
+              }>
                 Your Knowledge.
               </span>
             </h1>
-            <p className="text-lg sm:text-xl font-bold text-[#F04B0A] tracking-tight">
+            <p className="text-base sm:text-lg font-bold text-[#F04B0A] tracking-tight">
               Smarter Health Decisions Start Here.
             </p>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-[530px] font-normal pt-1">
-              A physician-curated, AI-powered symptom education and decision intelligence platform. Access 1,000 clinically reviewed cards with insights curated from 38 years of frontline medical practice.
+            <p className={`text-xs sm:text-[13px] leading-relaxed max-w-[500px] font-normal ${
+              isDark ? 'text-slate-300' : 'text-slate-600'
+            }`}>
+              A physician-curated, AI-powered symptom education and decision intelligence platform with 1,000 clinically reviewed cards from 38 years of frontline medical practice.
             </p>
           </div>
 
-          {/* Healthcare Authority Abstract Glass Card (Translucent Glassmorphism) */}
-          <div className="bg-white/65 backdrop-blur-xl border border-white/85 rounded-2xl p-4 sm:p-5 shadow-[0_10px_30px_rgba(8,22,91,0.06),_inset_0_1px_2px_rgba(255,255,255,0.8)] max-w-[520px] space-y-3.5">
-            <div className="flex items-center gap-3.5">
-              {/* Glowing Abstract Stethoscope Medical Badge */}
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#1677E8] to-[#0ea5e9] text-white flex items-center justify-center shadow-md shrink-0 border border-white/40">
-                <Stethoscope className="w-6 h-6 stroke-[2.3]" />
+          {/* Authority Glass Card */}
+          <div className={`backdrop-blur-xl border rounded-2xl p-3.5 sm:p-4 max-w-[500px] space-y-2.5 transition-colors duration-200 ${
+            isDark
+              ? 'bg-[#0F1C36]/80 border-slate-700/80 text-slate-100 shadow-xl'
+              : 'bg-white/70 border-white/90 text-slate-800 shadow-sm'
+          }`}>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#1677E8] to-[#0ea5e9] text-white flex items-center justify-center shadow-xs shrink-0">
+                <Stethoscope className="w-5 h-5 stroke-[2.3]" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs sm:text-sm font-bold text-[#08165B] tracking-tight">Clinical Knowledge Base</span>
-                  <span className="text-[10px] font-bold text-[#F04B0A] bg-orange-50 px-2 py-0.5 rounded-full border border-orange-200">
+                  <span className={`text-xs sm:text-[13px] font-bold tracking-tight ${
+                    isDark ? 'text-white' : 'text-[#08165B]'
+                  }`}>
+                    Clinical Knowledge Base
+                  </span>
+                  <span className={`text-[9.5px] font-bold px-2 py-0.2 rounded-full border ${
+                    isDark
+                      ? 'bg-orange-500/20 text-orange-300 border-orange-500/40'
+                      : 'bg-orange-50 text-[#F04B0A] border-orange-200'
+                  }`}>
                     38 Yrs Practice
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-500 font-medium">Physician-curated medical intelligence for patients & families</div>
+                <div className={`text-[10.5px] font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Physician-curated medical intelligence for patients & families
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2.5 pt-2.5 border-t border-slate-200/70 text-[11px] font-semibold text-slate-700">
+            <div className={`grid grid-cols-2 gap-2 pt-2 border-t text-[10.5px] font-semibold ${
+              isDark ? 'border-slate-700/80 text-slate-300' : 'border-slate-200/70 text-slate-700'
+            }`}>
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                 <span>1,000 Symptom Cards</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#1677E8] shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                 <span>256-Bit SSL Encrypted</span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -307,7 +314,7 @@ export default function LoginPage({ onNavigate }) {
                 <span>38 Years Clinical Data</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Award className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                <Award className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                 <span>HIPAA & Privacy Safe</span>
               </div>
             </div>
@@ -315,51 +322,65 @@ export default function LoginPage({ onNavigate }) {
 
         </div>
 
-        {/* ================= RIGHT SIDE: ULTRA-PREMIUM TRANSLUCENT GLASS LOGIN CARD ================= */}
+        {/* ================= RIGHT SIDE: COMPACT TRANSLUCENT GLASS LOGIN CARD ================= */}
         <div className="lg:col-span-6 flex justify-center lg:justify-end">
-          <div className="w-full max-w-[480px] bg-white/60 sm:bg-white/65 backdrop-blur-[24px] border border-white/85 rounded-[28px] shadow-[0_20px_50px_rgba(8,22,91,0.08),_inset_0_1px_2px_rgba(255,255,255,0.9)] p-7 sm:p-9 transition-all duration-300 relative">
+          <div className={`w-full max-w-[450px] backdrop-blur-[24px] border rounded-[24px] p-5 sm:p-6 lg:p-7 transition-all duration-300 relative ${
+            isDark
+              ? 'bg-[#0F1C36]/90 border-slate-700/90 text-slate-100 shadow-2xl'
+              : 'bg-white/80 border-white/95 text-slate-800 shadow-[0_16px_45px_rgba(8,22,91,0.08)]'
+          }`}>
             
             {/* Top Cyan/Blue Glow Accent Line */}
-            <div className="absolute top-0 left-8 right-8 h-[2.5px] bg-gradient-to-r from-transparent via-[#1677E8]/40 to-transparent rounded-full" />
+            <div className="absolute top-0 left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-[#1677E8]/50 to-transparent rounded-full" />
 
             {/* Card Header */}
-            <div className="mb-6">
-              <h2 className="text-2xl sm:text-[28px] font-black text-[#08165B] tracking-tight">
+            <div className="mb-4">
+              <h2 className={`text-xl sm:text-2xl font-black tracking-tight ${
+                isDark ? 'text-white' : 'text-[#08165B]'
+              }`}>
                 Welcome Back!
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+              <p className={`text-xs font-medium mt-0.5 ${
+                isDark ? 'text-slate-400' : 'text-slate-500'
+              }`}>
                 Sign in to continue to GlobalHealthAI.
               </p>
             </div>
 
-            {/* Role Selection Tabs (Translucent Glass Style) */}
-            <div className="mb-6">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">
+            {/* Role Selection Tabs */}
+            <div className="mb-3.5">
+              <div className={`text-[10px] font-bold uppercase tracking-wider mb-1.5 ${
+                isDark ? 'text-slate-400' : 'text-slate-500'
+              }`}>
                 Select Portal Access:
               </div>
-              <div className="grid grid-cols-2 gap-2 p-1.5 bg-white/45 border border-[#D6E6FA]/90 rounded-2xl backdrop-blur-md">
-                {/* Admin Tab */}
+              <div className={`grid grid-cols-2 gap-1.5 p-1 border rounded-xl backdrop-blur-md ${
+                isDark ? 'bg-slate-900/60 border-slate-700/80' : 'bg-white/50 border-[#D6E6FA]'
+              }`}>
                 <button
                   type="button"
                   onClick={() => handleRoleChange('admin')}
-                  className={`py-2.5 px-3 rounded-xl font-bold text-xs sm:text-[13px] tracking-wide transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`py-2 px-2.5 rounded-lg font-bold text-xs tracking-wide transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
                     selectedRole === 'admin'
-                      ? 'bg-gradient-to-r from-[#F04B0A] to-[#ff6224] text-white shadow-[0_4px_14px_rgba(240,75,10,0.35)]'
-                      : 'bg-transparent text-[#08165B] hover:bg-white/50'
+                      ? 'bg-gradient-to-r from-[#F04B0A] to-[#ff6224] text-white shadow-xs'
+                      : isDark
+                        ? 'bg-transparent text-slate-300 hover:bg-slate-800'
+                        : 'bg-transparent text-[#08165B] hover:bg-white/60'
                   }`}
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 stroke-[2.3]" />
+                  <ShieldCheck className="w-3.5 h-3.5" />
                   <span>ADMIN LOGIN</span>
                 </button>
 
-                {/* User Tab */}
                 <button
                   type="button"
                   onClick={() => handleRoleChange('user')}
-                  className={`py-2.5 px-3 rounded-xl font-bold text-xs sm:text-[13px] tracking-wide transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`py-2 px-2.5 rounded-lg font-bold text-xs tracking-wide transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
                     selectedRole === 'user'
-                      ? 'bg-gradient-to-r from-[#F04B0A] to-[#ff6224] text-white shadow-[0_4px_14px_rgba(240,75,10,0.35)]'
-                      : 'bg-transparent text-[#08165B] hover:bg-white/50'
+                      ? 'bg-gradient-to-r from-[#F04B0A] to-[#ff6224] text-white shadow-xs'
+                      : isDark
+                        ? 'bg-transparent text-slate-300 hover:bg-slate-800'
+                        : 'bg-transparent text-[#08165B] hover:bg-white/60'
                   }`}
                 >
                   <span>USER LOGIN</span>
@@ -367,38 +388,42 @@ export default function LoginPage({ onNavigate }) {
               </div>
             </div>
 
-            {/* Quick Demo Credentials Auto-Fill Pill */}
-            <div className="mb-5 flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-white/55 border border-blue-200/70 backdrop-blur-md text-[11px] text-[#08165B] shadow-2xs">
+            {/* Quick Demo Credentials Pill */}
+            <div className={`mb-3.5 flex items-center justify-between px-3 py-1.5 rounded-xl border text-[11px] ${
+              isDark ? 'bg-slate-900/60 border-slate-700/80 text-slate-200' : 'bg-white/60 border-blue-200/70 text-[#08165B]'
+            }`}>
               <div className="flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#F04B0A]" />
-                <span className="font-semibold">
-                  Demo Credentials Pre-filled:
-                </span>
+                <span className="font-semibold">Demo Credentials:</span>
               </div>
-              <span className="font-bold text-[#1677E8] bg-white/80 px-2 py-0.5 rounded-lg border border-blue-100 shadow-2xs">
+              <span className={`font-bold px-2 py-0.5 rounded-md border ${
+                isDark ? 'bg-slate-800 border-slate-700 text-blue-300' : 'bg-white/80 border-blue-100 text-[#1677E8]'
+              }`}>
                 {selectedRole === 'admin' ? 'admin@gmail.com' : 'user@gmail.com'}
               </span>
             </div>
 
             {/* Error Notification */}
             {errorMessage && (
-              <div className="mb-4 p-3 rounded-xl bg-red-50/95 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 animate-in fade-in duration-200">
-                <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+              <div className="mb-3 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{errorMessage}</span>
               </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
               
               {/* Email Input */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#08165B]">
+              <div className="space-y-1">
+                <label className={`block text-xs font-bold ${
+                  isDark ? 'text-slate-200' : 'text-[#08165B]'
+                }`}>
                   Email Address
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                    <Mail className="w-4 h-4" />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <Mail className="w-3.5 h-3.5" />
                   </div>
                   <input
                     type="email"
@@ -406,19 +431,25 @@ export default function LoginPage({ onNavigate }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/60 hover:bg-white/80 focus:bg-white/95 border border-[#D6E6FA] focus:border-[#1677E8] focus:ring-4 focus:ring-[#1677E8]/10 text-xs sm:text-sm font-medium text-slate-800 placeholder-slate-400 backdrop-blur-md transition-all outline-none shadow-2xs"
+                    className={`w-full pl-9 pr-3 py-2 rounded-xl border text-xs font-medium outline-none transition-all shadow-2xs ${
+                      isDark
+                        ? 'bg-[#0B132B] border-slate-700 text-white placeholder-slate-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20'
+                        : 'bg-white/90 border-[#D6E6FA] text-slate-800 placeholder-slate-400 focus:border-[#1677E8] focus:ring-2 focus:ring-[#1677E8]/10'
+                    }`}
                   />
                 </div>
               </div>
 
               {/* Password Input */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#08165B]">
+              <div className="space-y-1">
+                <label className={`block text-xs font-bold ${
+                  isDark ? 'text-slate-200' : 'text-[#08165B]'
+                }`}>
                   Password
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                    <Lock className="w-4 h-4" />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <Lock className="w-3.5 h-3.5" />
                   </div>
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -426,45 +457,48 @@ export default function LoginPage({ onNavigate }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white/60 hover:bg-white/80 focus:bg-white/95 border border-[#D6E6FA] focus:border-[#1677E8] focus:ring-4 focus:ring-[#1677E8]/10 text-xs sm:text-sm font-medium text-slate-800 placeholder-slate-400 backdrop-blur-md transition-all outline-none shadow-2xs"
+                    className={`w-full pl-9 pr-9 py-2 rounded-xl border text-xs font-medium outline-none transition-all shadow-2xs ${
+                      isDark
+                        ? 'bg-[#0B132B] border-slate-700 text-white placeholder-slate-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20'
+                        : 'bg-white/90 border-[#D6E6FA] text-slate-800 placeholder-slate-400 focus:border-[#1677E8] focus:ring-2 focus:ring-[#1677E8]/10'
+                    }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
                 </div>
               </div>
 
               {/* Remember Me & Forgot Password */}
-              <div className="flex items-center justify-between text-xs pt-1">
-                <label className="flex items-center gap-2 cursor-pointer select-none">
+              <div className="flex items-center justify-between text-[11px] pt-0.5">
+                <label className="flex items-center gap-1.5 cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-slate-300 text-[#F04B0A] focus:ring-[#F04B0A]/30 cursor-pointer accent-[#F04B0A]"
+                    className="w-3.5 h-3.5 rounded border-slate-300 text-[#F04B0A] focus:ring-[#F04B0A]/30 accent-[#F04B0A]"
                   />
-                  <span className="font-semibold text-slate-600">Remember Me</span>
+                  <span className={`font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Remember Me</span>
                 </label>
                 <button
                   type="button"
                   onClick={() => alert('For this demo, please use password: 12345678')}
-                  className="font-semibold text-[#1677E8] hover:text-[#08165B] transition-colors cursor-pointer"
+                  className="font-semibold text-[#1677E8] hover:underline transition-colors cursor-pointer"
                 >
                   Forgot Password?
                 </button>
               </div>
 
               {/* Submit Button */}
-              <div className="pt-2">
+              <div className="pt-1.5">
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 sm:py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#F04B0A] via-[#f75e23] to-[#F04B0A] hover:from-[#c2410c] hover:to-[#9a3412] text-white font-bold text-sm sm:text-base shadow-[0_8px_20px_rgba(240,75,10,0.35)] hover:shadow-[0_12px_28px_rgba(240,75,10,0.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+                  className="w-full py-2.5 sm:py-3 px-5 rounded-xl bg-gradient-to-r from-[#F04B0A] via-[#f75e23] to-[#F04B0A] hover:from-[#c2410c] hover:to-[#9a3412] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
                 >
                   {isLoading ? (
                     <>
@@ -482,9 +516,27 @@ export default function LoginPage({ onNavigate }) {
 
             </form>
 
+            {/* Register New User Link */}
+            <div className="mt-3.5 text-center text-xs">
+              <span className={`font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Don't have an account? </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowRegisterModal(true);
+                  setRegError('');
+                  setRegSuccess(false);
+                }}
+                className="font-bold text-[#F04B0A] hover:text-[#c2410c] hover:underline cursor-pointer"
+              >
+                Register New User
+              </button>
+            </div>
+
             {/* Footer Trust Badge */}
-            <div className="mt-6 pt-4 border-t border-slate-200/60 flex items-center justify-center gap-1.5 text-[11px] font-medium text-slate-500">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <div className={`mt-4 pt-3 border-t flex items-center justify-center gap-1.5 text-[10.5px] font-medium ${
+              isDark ? 'border-slate-800 text-slate-400' : 'border-slate-200/60 text-slate-500'
+            }`}>
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
               <span>Protected by 256-Bit SSL Encryption • HIPAA Compliant</span>
             </div>
 
@@ -492,6 +544,240 @@ export default function LoginPage({ onNavigate }) {
         </div>
 
       </div>
+
+      {/* ================= SIGN UP / REGISTER MODAL POPUP ================= */}
+      {showRegisterModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className={`w-full max-w-[460px] backdrop-blur-2xl rounded-3xl p-6 sm:p-7 border shadow-2xl relative animate-in zoom-in-95 duration-200 ${
+            isDark
+              ? 'bg-[#0F1C36] border-slate-700 text-slate-100'
+              : 'bg-white/95 border-blue-200 text-slate-800'
+          }`}>
+            
+            {/* Top Controls in Modal: Theme Toggle & Close Button */}
+            <div className="absolute top-5 right-5 flex items-center gap-1.5">
+              <ThemeToggle variant="topbar" />
+              <button
+                type="button"
+                onClick={() => setShowRegisterModal(false)}
+                className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+                  isDark ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
+                }`}
+                title="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Header */}
+            <div className="mb-4 pr-16">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-500 text-[10.5px] font-bold mb-2 border border-blue-500/20">
+                <Sparkles className="w-3 h-3 text-[#F04B0A]" />
+                <span>Instant Patient & Caregiver Access</span>
+              </div>
+              <h3 className={`text-xl sm:text-2xl font-black tracking-tight ${
+                isDark ? 'text-white' : 'text-[#08165B]'
+              }`}>
+                Create Your Account
+              </h3>
+              <p className={`text-xs font-medium mt-0.5 ${
+                isDark ? 'text-slate-400' : 'text-slate-500'
+              }`}>
+                Join GlobalHealthAI for verified clinical guidance & triage.
+              </p>
+            </div>
+
+            {/* Error or Success notification */}
+            {regError && (
+              <div className="mb-3 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500 text-xs font-semibold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{regError}</span>
+              </div>
+            )}
+
+            {regSuccess && (
+              <div className="mb-3 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-xs font-semibold flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>Account created successfully! Logging you in...</span>
+              </div>
+            )}
+
+            {/* Register Form */}
+            <form onSubmit={handleRegisterSubmit} className="space-y-3">
+              
+              {/* Full Name */}
+              <div className="space-y-1">
+                <label className={`block text-xs font-bold ${
+                  isDark ? 'text-slate-200' : 'text-[#08165B]'
+                }`}>
+                  Full Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <User className="w-3.5 h-3.5" />
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    value={regName}
+                    onChange={(e) => setRegName(e.target.value)}
+                    placeholder="Enter your name"
+                    className={`w-full pl-9 pr-3 py-2 rounded-xl border text-xs focus:outline-none transition-all ${
+                      isDark
+                        ? 'bg-[#080D1A] border-slate-700 text-white placeholder-slate-500 focus:border-blue-400'
+                        : 'bg-slate-50 border-[#D6E6FA] text-slate-800 placeholder-slate-400 focus:border-[#1677E8]'
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* Email Address */}
+              <div className="space-y-1">
+                <label className={`block text-xs font-bold ${
+                  isDark ? 'text-slate-200' : 'text-[#08165B]'
+                }`}>
+                  Email Address
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <Mail className="w-3.5 h-3.5" />
+                  </div>
+                  <input
+                    type="email"
+                    required
+                    value={regEmail}
+                    onChange={(e) => setRegEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className={`w-full pl-9 pr-3 py-2 rounded-xl border text-xs focus:outline-none transition-all ${
+                      isDark
+                        ? 'bg-[#080D1A] border-slate-700 text-white placeholder-slate-500 focus:border-blue-400'
+                        : 'bg-slate-50 border-[#D6E6FA] text-slate-800 placeholder-slate-400 focus:border-[#1677E8]'
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="space-y-1">
+                  <label className={`block text-xs font-bold ${
+                    isDark ? 'text-slate-200' : 'text-[#08165B]'
+                  }`}>
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showRegPassword ? 'text' : 'password'}
+                      required
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      placeholder="Min 6 chars"
+                      className={`w-full px-3 py-2 rounded-xl border text-xs focus:outline-none transition-all ${
+                        isDark
+                          ? 'bg-[#080D1A] border-slate-700 text-white placeholder-slate-500 focus:border-blue-400'
+                          : 'bg-slate-50 border-[#D6E6FA] text-slate-800 placeholder-slate-400 focus:border-[#1677E8]'
+                      }`}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className={`block text-xs font-bold ${
+                    isDark ? 'text-slate-200' : 'text-[#08165B]'
+                  }`}>
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showRegPassword ? 'text' : 'password'}
+                      required
+                      value={regConfirmPassword}
+                      onChange={(e) => setRegConfirmPassword(e.target.value)}
+                      placeholder="Repeat password"
+                      className={`w-full px-3 py-2 rounded-xl border text-xs focus:outline-none transition-all ${
+                        isDark
+                          ? 'bg-[#080D1A] border-slate-700 text-white placeholder-slate-500 focus:border-blue-400'
+                          : 'bg-slate-50 border-[#D6E6FA] text-slate-800 placeholder-slate-400 focus:border-[#1677E8]'
+                      }`}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Role Option */}
+              <div className="space-y-1 pt-1">
+                <label className={`block text-xs font-bold ${
+                  isDark ? 'text-slate-200' : 'text-[#08165B]'
+                }`}>
+                  Account Type
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setRegRole('user')}
+                    className={`py-1.5 px-2.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                      regRole === 'user'
+                        ? 'bg-blue-500/10 border-blue-500 text-blue-500 font-black'
+                        : isDark
+                          ? 'bg-slate-800/60 border-slate-700 text-slate-300'
+                          : 'bg-white border-slate-200 text-slate-600'
+                    }`}
+                  >
+                    Patient / Family User
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRegRole('admin')}
+                    className={`py-1.5 px-2.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                      regRole === 'admin'
+                        ? 'bg-orange-500/10 border-[#F04B0A] text-[#F04B0A] font-black'
+                        : isDark
+                          ? 'bg-slate-800/60 border-slate-700 text-slate-300'
+                          : 'bg-white border-slate-200 text-slate-600'
+                    }`}
+                  >
+                    Clinical Admin
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit Register Button */}
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={regLoading || regSuccess}
+                  className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#F04B0A] to-[#ff6224] hover:from-[#c2410c] hover:to-[#9a3412] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+                >
+                  {regLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <span>Creating Account...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Create Account & Get Started</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Already have an account link */}
+              <div className="text-center pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowRegisterModal(false)}
+                  className={`text-xs font-semibold ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-[#08165B]'}`}
+                >
+                  Already have an account? <span className="text-[#1677E8] font-bold hover:underline">Sign In</span>
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );

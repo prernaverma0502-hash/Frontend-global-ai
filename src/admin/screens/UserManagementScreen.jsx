@@ -315,49 +315,49 @@ export default function UserManagementScreen({ navigateTo, showToast }) {
 
       {/* MODAL 1: ADD USER */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#D6E6FA] space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="text-base font-black text-[#08165B]">Add New GlobalHealthAI User</h3>
-              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white dark:bg-[#0F1C36] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#D6E6FA] dark:border-slate-700 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <h3 className="text-base font-black text-[#08165B] dark:text-white">Add New GlobalHealthAI User</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleAddSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-[#08165B] mb-1">Full Name *</label>
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1">Full Name *</label>
                 <input
                   type="text"
                   required
                   value={addForm.name}
                   onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
                   placeholder="e.g. Dr. Emily Watson"
-                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] outline-none text-xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] dark:border-slate-700 bg-white dark:bg-[#0B132B] text-slate-800 dark:text-white outline-none text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-[#08165B] mb-1">Email Address *</label>
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1">Email Address *</label>
                 <input
                   type="email"
                   required
                   value={addForm.email}
                   onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
                   placeholder="e.g. emily.watson@hospital.org"
-                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] outline-none text-xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] dark:border-slate-700 bg-white dark:bg-[#0B132B] text-slate-800 dark:text-white outline-none text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-[#08165B] mb-1">Role * (Strictly Admin or User)</label>
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1">Role * (Strictly Admin or User)</label>
                 <select
                   value={addForm.role}
                   onChange={(e) => setAddForm({ ...addForm, role: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] font-bold text-[#08165B] bg-white outline-none text-xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] dark:border-slate-700 font-bold text-[#08165B] dark:text-white bg-white dark:bg-[#0B132B] outline-none text-xs"
                 >
-                  <option value="User">User (Standard Patient / Consumer Access)</option>
-                  <option value="Admin">Admin (Full Administrative & Knowledge Console Access)</option>
+                  <option value="User" className="dark:bg-[#0B132B] dark:text-white">User (Standard Patient / Consumer Access)</option>
+                  <option value="Admin" className="dark:bg-[#0B132B] dark:text-white">Admin (Full Administrative & Knowledge Console Access)</option>
                 </select>
               </div>
 
@@ -365,13 +365,13 @@ export default function UserManagementScreen({ navigateTo, showToast }) {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold"
+                  className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 dark:hover:bg-slate-800 font-bold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#1677E8] text-white font-bold hover:bg-[#08165B]"
+                  className="px-5 py-2 rounded-xl bg-[#1677E8] text-white font-bold hover:bg-[#08165B] dark:hover:bg-blue-600"
                 >
                   Create User
                 </button>
@@ -383,45 +383,45 @@ export default function UserManagementScreen({ navigateTo, showToast }) {
 
       {/* MODAL 2: EDIT USER */}
       {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#D6E6FA] space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="text-base font-black text-[#08165B]">Edit User Account</h3>
-              <button onClick={() => setEditingUser(null)} className="text-slate-400 hover:text-slate-600">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white dark:bg-[#0F1C36] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#D6E6FA] dark:border-slate-700 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <h3 className="text-base font-black text-[#08165B] dark:text-white">Edit User Account</h3>
+              <button onClick={() => setEditingUser(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleEditSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-[#08165B] mb-1">Full Name</label>
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1">Full Name</label>
                 <input
                   type="text"
                   value={editingUser.name}
                   onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] outline-none text-xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] dark:border-slate-700 bg-white dark:bg-[#0B132B] text-slate-800 dark:text-white outline-none text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-[#08165B] mb-1">Email Address</label>
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1">Email Address</label>
                 <input
                   type="email"
                   value={editingUser.email}
                   onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] outline-none text-xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] dark:border-slate-700 bg-white dark:bg-[#0B132B] text-slate-800 dark:text-white outline-none text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-[#08165B] mb-1">Role (Strictly Admin or User)</label>
+                <label className="block font-bold text-[#08165B] dark:text-slate-200 mb-1">Role (Strictly Admin or User)</label>
                 <select
                   value={editingUser.role}
                   onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] font-bold text-[#08165B] bg-white outline-none text-xs"
+                  className="w-full px-3 py-2 rounded-xl border border-[#D6E6FA] dark:border-slate-700 font-bold text-[#08165B] dark:text-white bg-white dark:bg-[#0B132B] outline-none text-xs"
                 >
-                  <option value="User">User</option>
-                  <option value="Admin">Admin</option>
+                  <option value="User" className="dark:bg-[#0B132B] dark:text-white">User</option>
+                  <option value="Admin" className="dark:bg-[#0B132B] dark:text-white">Admin</option>
                 </select>
               </div>
 
@@ -429,13 +429,13 @@ export default function UserManagementScreen({ navigateTo, showToast }) {
                 <button
                   type="button"
                   onClick={() => setEditingUser(null)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold"
+                  className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 dark:hover:bg-slate-800 font-bold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#1677E8] text-white font-bold hover:bg-[#08165B]"
+                  className="px-5 py-2 rounded-xl bg-[#1677E8] text-white font-bold hover:bg-[#08165B] dark:hover:bg-blue-600"
                 >
                   Update User
                 </button>
@@ -447,28 +447,28 @@ export default function UserManagementScreen({ navigateTo, showToast }) {
 
       {/* MODAL 3: DELETE USER CONFIRMATION */}
       {userToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-rose-200 space-y-4">
-            <div className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white dark:bg-[#0F1C36] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-rose-200 dark:border-rose-900/60 space-y-4">
+            <div className="w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center">
               <Trash2 className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-base font-black text-[#08165B]">Delete User Account?</h4>
-              <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Are you sure you want to delete <strong className="text-slate-800">{userToDelete.name}</strong> ({userToDelete.email})?
+              <h4 className="text-base font-black text-[#08165B] dark:text-white">Delete User Account?</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-300 font-medium mt-1 leading-relaxed">
+                Are you sure you want to delete <strong className="text-slate-800 dark:text-white">{userToDelete.name}</strong> ({userToDelete.email})?
                 This action revokes all login credentials immediately.
               </p>
             </div>
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
                 onClick={() => setUserToDelete(null)}
-                className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs"
+                className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 dark:hover:bg-slate-800 font-bold text-xs"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirmDelete}
-                className="px-4 py-2 rounded-xl bg-rose-600 text-white font-bold text-xs hover:bg-rose-700"
+                className="px-4 py-2 rounded-xl bg-rose-600 text-white font-bold text-xs hover:bg-rose-700 shadow-md shadow-rose-600/30"
               >
                 Delete User
               </button>
@@ -479,28 +479,28 @@ export default function UserManagementScreen({ navigateTo, showToast }) {
 
       {/* MODAL 4: PASSWORD RESET CONFIRMATION */}
       {passwordResetUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-blue-200 space-y-4">
-            <div className="w-10 h-10 rounded-full bg-blue-50 text-[#1677E8] flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white dark:bg-[#0F1C36] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-blue-200 dark:border-blue-900/60 space-y-4">
+            <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-950/50 text-[#1677E8] dark:text-blue-400 flex items-center justify-center">
               <Key className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-base font-black text-[#08165B]">Dispatch Password Reset Token?</h4>
-              <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Send an encrypted password reset link to <strong className="text-slate-800">{passwordResetUser.email}</strong>?
+              <h4 className="text-base font-black text-[#08165B] dark:text-white">Dispatch Password Reset Token?</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-300 font-medium mt-1 leading-relaxed">
+                Send an encrypted password reset link to <strong className="text-slate-800 dark:text-white">{passwordResetUser.email}</strong>?
                 The link will expire in 24 hours.
               </p>
             </div>
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
                 onClick={() => setPasswordResetUser(null)}
-                className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs"
+                className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 dark:hover:bg-slate-800 font-bold text-xs"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirmPasswordReset}
-                className="px-4 py-2 rounded-xl bg-[#1677E8] text-white font-bold text-xs hover:bg-[#08165B]"
+                className="px-4 py-2 rounded-xl bg-[#1677E8] text-white font-bold text-xs hover:bg-[#08165B] dark:hover:bg-blue-600 shadow-md shadow-blue-500/20"
               >
                 Send Reset Link
               </button>

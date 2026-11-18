@@ -177,65 +177,65 @@ export default function DashboardScreen({ navigateTo, showToast }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
             
             {/* Health Item 1: Model Connection */}
-            <div className="p-4 rounded-xl bg-[#F2F7FF] border border-[#D6E6FA] flex items-start justify-between">
+            <div className="p-4 rounded-xl bg-[#F2F7FF] dark:bg-[#0B132B] border border-[#D6E6FA] dark:border-slate-800 flex items-start justify-between">
               <div>
-                <div className="text-xs font-bold text-slate-500">Model Connection</div>
-                <div className="text-sm font-black text-[#08165B] mt-0.5">{aiConfig.model}</div>
-                <div className="text-xs text-slate-600 font-medium mt-2 flex items-center gap-2">
-                  <span>Latency: <strong className="text-[#08165B]">{aiConfig.latencyMs} ms</strong></span>
+                <div className="text-xs font-bold text-slate-500 dark:text-slate-400">Model Connection</div>
+                <div className="text-sm font-black text-[#08165B] dark:text-white mt-0.5">{aiConfig.model}</div>
+                <div className="text-xs text-slate-600 dark:text-slate-300 font-medium mt-2 flex items-center gap-2">
+                  <span>Latency: <strong className="text-[#08165B] dark:text-white">{aiConfig.latencyMs} ms</strong></span>
                   <span>•</span>
-                  <span>Provider: <strong className="text-[#08165B]">{aiConfig.provider}</strong></span>
+                  <span>Provider: <strong className="text-[#08165B] dark:text-white">{aiConfig.provider}</strong></span>
                 </div>
               </div>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+              <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold">
                 Healthy
               </span>
             </div>
 
             {/* Health Item 2: Knowledge Retrieval */}
-            <div className="p-4 rounded-xl bg-[#F2F7FF] border border-[#D6E6FA] flex items-start justify-between">
+            <div className="p-4 rounded-xl bg-[#F2F7FF] dark:bg-[#0B132B] border border-[#D6E6FA] dark:border-slate-800 flex items-start justify-between">
               <div>
-                <div className="text-xs font-bold text-slate-500">Knowledge Retrieval</div>
-                <div className="text-sm font-black text-[#08165B] mt-0.5">Vector Hybrid Index</div>
-                <div className="text-xs text-slate-600 font-medium mt-2 flex items-center gap-2">
-                  <span>Sim. Threshold: <strong className="text-[#08165B]">{aiConfig.retrievalSettings.similarityThreshold}</strong></span>
+                <div className="text-xs font-bold text-slate-500 dark:text-slate-400">Knowledge Retrieval</div>
+                <div className="text-sm font-black text-[#08165B] dark:text-white mt-0.5">Vector Hybrid Index</div>
+                <div className="text-xs text-slate-600 dark:text-slate-300 font-medium mt-2 flex items-center gap-2">
+                  <span>Sim. Threshold: <strong className="text-[#08165B] dark:text-white">{aiConfig.retrievalSettings.similarityThreshold}</strong></span>
                   <span>•</span>
-                  <span>Top-K: <strong className="text-[#08165B]">{aiConfig.retrievalSettings.topKChunks}</strong></span>
+                  <span>Top-K: <strong className="text-[#08165B] dark:text-white">{aiConfig.retrievalSettings.topKChunks}</strong></span>
                 </div>
               </div>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+              <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold">
                 Healthy
               </span>
             </div>
 
             {/* Health Item 3: Response Quality */}
-            <div className="p-4 rounded-xl bg-[#F2F7FF] border border-[#D6E6FA] flex items-start justify-between">
+            <div className="p-4 rounded-xl bg-[#F2F7FF] dark:bg-[#0B132B] border border-[#D6E6FA] dark:border-slate-800 flex items-start justify-between">
               <div>
-                <div className="text-xs font-bold text-slate-500">Response Quality</div>
-                <div className="text-sm font-black text-[#08165B] mt-0.5">Evidence Grounded</div>
-                <div className="text-xs text-slate-600 font-medium mt-2 flex items-center gap-2">
-                  <span>Grounding: <strong className="text-emerald-600">98.2%</strong></span>
+                <div className="text-xs font-bold text-slate-500 dark:text-slate-400">Response Quality</div>
+                <div className="text-sm font-black text-[#08165B] dark:text-white mt-0.5">Evidence Grounded</div>
+                <div className="text-xs text-slate-600 dark:text-slate-300 font-medium mt-2 flex items-center gap-2">
+                  <span>Grounding: <strong className="text-emerald-600 dark:text-emerald-400">98.2%</strong></span>
                   <span>•</span>
-                  <span>Hallucination: <strong className="text-emerald-600">&lt; 0.5%</strong></span>
+                  <span>Hallucination: <strong className="text-emerald-600 dark:text-emerald-400">&lt; 0.5%</strong></span>
                 </div>
               </div>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+              <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold">
                 Healthy
               </span>
             </div>
 
             {/* Health Item 4: Safety Filters */}
-            <div className="p-4 rounded-xl bg-[#F2F7FF] border border-[#D6E6FA] flex items-start justify-between">
+            <div className="p-4 rounded-xl bg-[#F2F7FF] dark:bg-[#0B132B] border border-[#D6E6FA] dark:border-slate-800 flex items-start justify-between">
               <div>
-                <div className="text-xs font-bold text-slate-500">Safety Filters</div>
-                <div className="text-sm font-black text-[#08165B] mt-0.5">Clinical Red-Flag Guard</div>
-                <div className="text-xs text-slate-600 font-medium mt-2 flex items-center gap-2">
-                  <span>No Diagnosis: <strong className="text-emerald-600">Enforced</strong></span>
+                <div className="text-xs font-bold text-slate-500 dark:text-slate-400">Safety Filters</div>
+                <div className="text-sm font-black text-[#08165B] dark:text-white mt-0.5">Clinical Red-Flag Guard</div>
+                <div className="text-xs text-slate-600 dark:text-slate-300 font-medium mt-2 flex items-center gap-2">
+                  <span>No Diagnosis: <strong className="text-emerald-600 dark:text-emerald-400">Enforced</strong></span>
                   <span>•</span>
-                  <span>Emergency: <strong className="text-emerald-600">Active</strong></span>
+                  <span>Emergency: <strong className="text-emerald-600 dark:text-emerald-400">Active</strong></span>
                 </div>
               </div>
-              <span className="px-2 py-0.5 rounded-full bg-blue-100 text-[#1677E8] text-[10px] font-bold">
+              <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/60 text-[#1677E8] dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-[10px] font-bold">
                 Protected
               </span>
             </div>

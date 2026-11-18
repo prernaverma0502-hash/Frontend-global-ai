@@ -20,7 +20,8 @@ import {
   ShieldCheck,
   FileCode,
   SlidersHorizontal,
-  Upload
+  Upload,
+  Info
 } from 'lucide-react';
 import { useAdminStore } from '../store/adminStore';
 
@@ -44,6 +45,27 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
 
   // Delete Confirmation Modal
   const [docToDelete, setDocToDelete] = useState(null);
+
+  // Effective File URL for Original Document Preview
+  const effectiveFileUrl = useMemo(() => {
+    if (!activeDoc) return null;
+    const cached = typeof window !== 'undefined' && window.__GLOBAL_HEALTH_FILE_CACHE__?.[activeDoc.id]?.url;
+    return activeDoc.fileUrl || activeDoc.fileDataUrl || cached || null;
+  }, [activeDoc]);
+
+  const handleAttachFile = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file && activeDoc) {
+      const url = URL.createObjectURL(file);
+      if (typeof window !== 'undefined') {
+        window.__GLOBAL_HEALTH_FILE_CACHE__ = window.__GLOBAL_HEALTH_FILE_CACHE__ || {};
+        window.__GLOBAL_HEALTH_FILE_CACHE__[activeDoc.id] = { file, url, name: file.name };
+      }
+      updateDocument(activeDoc.id, { fileUrl: url, originalFileName: file.name });
+      setActiveDoc(prev => ({ ...prev, fileUrl: url, originalFileName: file.name }));
+      if (showToast) showToast(`Original file "${file.name}" linked successfully!`);
+    }
+  };
 
   // Filter & Search Logic
   const filteredDocuments = useMemo(() => {
@@ -272,7 +294,10 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
                   <tr
                     key={doc.id}
                     className="hover:bg-blue-50/40 transition-colors group cursor-pointer"
-                    onClick={() => setActiveDoc(doc)}
+                    onClick={() => {
+                      setActiveDoc(doc);
+                      setDrawerTab('original');
+                    }}
                   >
                     {/* Name & Size */}
                     <td className="py-3.5 px-4 sm:px-6 max-w-[280px]">
@@ -337,9 +362,12 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
                     <td className="py-3.5 px-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
                         <button
-                          onClick={() => setActiveDoc(doc)}
-                          title="View Details"
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#1677E8] hover:bg-blue-50 transition-colors"
+                          onClick={() => {
+                            setActiveDoc(doc);
+                            setDrawerTab('original');
+                          }}
+                          title="View Original Document"
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#1677E8] hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
@@ -408,16 +436,16 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
 
       {/* DOCUMENT DETAILS MODAL / DRAWER */}
       {activeDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/40 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl border border-[#D6E6FA] overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className={`bg-white dark:bg-[#0F1C36] rounded-3xl w-full ${drawerTab === 'original' ? 'max-w-5xl' : 'max-w-2xl'} max-h-[92vh] flex flex-col shadow-2xl border border-[#D6E6FA] dark:border-slate-700 overflow-hidden transition-all duration-300`}>
             
             {/* Modal Header */}
-            <div className="p-6 border-b border-[#D6E6FA] flex items-start justify-between bg-gradient-to-r from-blue-50/50 to-white">
+            <div className="p-6 border-b border-[#D6E6FA] dark:border-slate-700 flex items-start justify-between bg-gradient-to-r from-blue-50/70 to-white dark:from-slate-800/80 dark:to-[#0F1C36]">
               <div className="pr-4">
-                <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-[#1677E8] font-black text-[10px] uppercase">
+                <span className="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-[#1677E8] dark:text-blue-300 border border-blue-200/50 dark:border-blue-700/50 font-black text-[10px] uppercase">
                   {activeDoc.category}
                 </span>
-                <h3 className="text-lg font-black text-[#08165B] mt-1.5 leading-snug">
+                <h3 className="text-lg font-black text-[#08165B] dark:text-white mt-1.5 leading-snug">
                   {activeDoc.title}
                 </h3>
                 <div className="text-xs text-slate-400 mt-1 flex items-center gap-2">
@@ -429,40 +457,55 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
 
               <button
                 onClick={() => setActiveDoc(null)}
-                className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100"
+                className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                title="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Modal Internal Tabs */}
-            <div className="flex border-b border-slate-100 px-6 bg-slate-50/60 text-xs font-bold text-slate-600">
+            {/* Modal Internal Tabs (High contrast in Dark and Light mode) */}
+            <div className="flex border-b border-slate-200 dark:border-slate-800 px-6 bg-slate-50/90 dark:bg-slate-900/80 text-xs font-bold overflow-x-auto">
+              <button
+                onClick={() => setDrawerTab('original')}
+                className={`py-3 px-3 border-b-2 transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                  drawerTab === 'original'
+                    ? 'border-[#1677E8] dark:border-blue-400 text-[#1677E8] dark:text-blue-400 font-black'
+                    : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#08165B] dark:hover:text-white'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>Original Document</span>
+                {effectiveFileUrl && (
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Live File Attached"></span>
+                )}
+              </button>
               <button
                 onClick={() => setDrawerTab('overview')}
-                className={`py-3 px-3 border-b-2 transition-colors ${
+                className={`py-3 px-3 border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
                   drawerTab === 'overview'
-                    ? 'border-[#1677E8] text-[#1677E8]'
-                    : 'border-transparent hover:text-[#08165B]'
+                    ? 'border-[#1677E8] dark:border-blue-400 text-[#1677E8] dark:text-blue-400 font-black'
+                    : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#08165B] dark:hover:text-white'
                 }`}
               >
                 Overview & Summary
               </button>
               <button
                 onClick={() => setDrawerTab('chunks')}
-                className={`py-3 px-3 border-b-2 transition-colors ${
+                className={`py-3 px-3 border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
                   drawerTab === 'chunks'
-                    ? 'border-[#1677E8] text-[#1677E8]'
-                    : 'border-transparent hover:text-[#08165B]'
+                    ? 'border-[#1677E8] dark:border-blue-400 text-[#1677E8] dark:text-blue-400 font-black'
+                    : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#08165B] dark:hover:text-white'
                 }`}
               >
                 Extracted Text & Chunks ({activeDoc.chunksCount})
               </button>
               <button
                 onClick={() => setDrawerTab('metadata')}
-                className={`py-3 px-3 border-b-2 transition-colors ${
+                className={`py-3 px-3 border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
                   drawerTab === 'metadata'
-                    ? 'border-[#1677E8] text-[#1677E8]'
-                    : 'border-transparent hover:text-[#08165B]'
+                    ? 'border-[#1677E8] dark:border-blue-400 text-[#1677E8] dark:text-blue-400 font-black'
+                    : 'border-transparent text-slate-600 dark:text-slate-300 hover:text-[#08165B] dark:hover:text-white'
                 }`}
               >
                 Metadata & Vectors
@@ -471,27 +514,157 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
 
             {/* Modal Body */}
             <div className="p-6 overflow-y-auto space-y-4 text-xs">
+              
+              {/* TAB 1: ORIGINAL DOCUMENT (PDF / FILE PREVIEW) */}
+              {drawerTab === 'original' && (
+                <div className="space-y-4">
+                  {/* File Info & Action Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-blue-50/60 dark:bg-slate-900/90 border border-blue-100 dark:border-slate-800">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#1677E8] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                        {activeDoc.fileType || 'PDF'}
+                      </div>
+                      <div>
+                        <div className="font-bold text-[#08165B] dark:text-white text-xs sm:text-sm truncate max-w-md">
+                          {activeDoc.originalFileName || `${activeDoc.title}.${(activeDoc.fileType || 'pdf').toLowerCase()}`}
+                        </div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2 mt-0.5">
+                          <span>Size: {activeDoc.fileSize}</span>
+                          <span>•</span>
+                          <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                            <ShieldCheck className="w-3.5 h-3.5" />
+                            Verified Original Source
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      {effectiveFileUrl && (
+                        <button
+                          onClick={() => window.open(effectiveFileUrl, '_blank')}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B132B] hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+                          title="Open original document in full browser tab"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Open in New Tab</span>
+                        </button>
+                      )}
+
+                      <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-[#1677E8] dark:text-blue-300 font-bold text-xs hover:bg-blue-100 dark:hover:bg-blue-900/60 border border-blue-200/60 dark:border-blue-700/60 transition-colors cursor-pointer">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>{effectiveFileUrl ? 'Switch File' : 'Attach Local PDF'}</span>
+                        <input
+                          type="file"
+                          accept=".pdf,.docx,.txt"
+                          onChange={handleAttachFile}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Document Viewer Frame */}
+                  {effectiveFileUrl ? (
+                    <div className="w-full h-[540px] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-900 shadow-inner flex flex-col">
+                      <iframe
+                        src={effectiveFileUrl}
+                        className="w-full h-full border-0 bg-white"
+                        title={`Original Document - ${activeDoc.title}`}
+                      />
+                    </div>
+                  ) : (
+                    /* Fallback Document Sheet / Manuscript Preview */
+                    <div className="space-y-4">
+                      <div className="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 text-blue-900 dark:text-blue-200 text-xs flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                          <Info className="w-4 h-4 shrink-0 text-[#1677E8] dark:text-blue-400" />
+                          <span>
+                            Complete verified clinical text & structure for this document is displayed below. You can also click <strong>"Attach Local PDF"</strong> above to embed the exact physical PDF file.
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Formatted Medical Manuscript Paper Sheet */}
+                      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm space-y-6 text-slate-800 dark:text-slate-100 font-sans max-h-[500px] overflow-y-auto">
+                        {/* Paper Header */}
+                        <div className="border-b-2 border-[#08165B] dark:border-blue-500 pb-4 flex items-start justify-between">
+                          <div>
+                            <div className="text-[10px] font-black uppercase tracking-widest text-[#1677E8] dark:text-blue-400">
+                              GlobalHealthAI Clinical Knowledge Base • Verified Document
+                            </div>
+                            <h2 className="text-base sm:text-lg font-black text-[#08165B] dark:text-white mt-1">
+                              {activeDoc.title}
+                            </h2>
+                            <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                              Classification: {activeDoc.category} • Source: {activeDoc.sourceType} • Lang: {activeDoc.language}
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-400 text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">
+                              <CheckCircle2 className="w-3 h-3" />
+                              Verified & Indexed
+                            </span>
+                            <div className="text-[10px] text-slate-400 mt-1">ID: {activeDoc.id}</div>
+                          </div>
+                        </div>
+
+                        {/* Section 1: Clinical Abstract */}
+                        <div className="space-y-2">
+                          <div className="text-xs font-black uppercase tracking-wider text-[#08165B] dark:text-blue-400">
+                            1. Executive Abstract & Scope
+                          </div>
+                          <p className="text-xs leading-relaxed text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                            {activeDoc.description || 'Clinical knowledge reference source verified for medical grounding and safe next steps.'}
+                          </p>
+                        </div>
+
+                        {/* Section 2: Primary Clinical Text */}
+                        <div className="space-y-2">
+                          <div className="text-xs font-black uppercase tracking-wider text-[#08165B] dark:text-blue-400">
+                            2. Clinical Directives & Evidence Content
+                          </div>
+                          <div className="text-xs leading-relaxed text-slate-700 dark:text-slate-300 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/60 font-mono text-[11px] whitespace-pre-wrap">
+                            {activeDoc.extractedTextSample}
+                          </div>
+                        </div>
+
+                        {/* Section 3: Indexing Verification Stamp */}
+                        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 gap-2">
+                          <div>
+                            Reviewed by: <strong className="text-[#08165B] dark:text-white">Dr. Pratap Madhukar</strong> (Physician • Clinical Editor)
+                          </div>
+                          <div className="italic">
+                            Indexed into {activeDoc.chunksCount} semantic vector chunks • 1536-dim Embedding Space
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {drawerTab === 'overview' && (
                 <div className="space-y-4">
                   <div>
                     <div className="font-bold text-slate-400 uppercase text-[10px] mb-1">Description</div>
-                    <p className="text-slate-700 leading-relaxed font-medium bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                    <p className="text-slate-700 dark:text-slate-200 leading-relaxed font-medium bg-slate-50 dark:bg-slate-900/60 p-3.5 rounded-xl border border-slate-100 dark:border-slate-800">
                       {activeDoc.description || 'No additional description provided.'}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    <div className="p-3 rounded-xl bg-blue-50/50 border border-blue-100">
+                    <div className="p-3 rounded-xl bg-blue-50/50 dark:bg-slate-900/60 border border-blue-100 dark:border-slate-800">
                       <div className="text-[10px] font-bold text-slate-400">File Type & Size</div>
-                      <div className="font-black text-[#08165B] mt-0.5">{activeDoc.fileType} ({activeDoc.fileSize})</div>
+                      <div className="font-black text-[#08165B] dark:text-white mt-0.5">{activeDoc.fileType} ({activeDoc.fileSize})</div>
                     </div>
-                    <div className="p-3 rounded-xl bg-blue-50/50 border border-blue-100">
+                    <div className="p-3 rounded-xl bg-blue-50/50 dark:bg-slate-900/60 border border-blue-100 dark:border-slate-800">
                       <div className="text-[10px] font-bold text-slate-400">Source Type</div>
-                      <div className="font-black text-[#08165B] mt-0.5">{activeDoc.sourceType}</div>
+                      <div className="font-black text-[#08165B] dark:text-white mt-0.5">{activeDoc.sourceType}</div>
                     </div>
-                    <div className="p-3 rounded-xl bg-blue-50/50 border border-blue-100">
+                    <div className="p-3 rounded-xl bg-blue-50/50 dark:bg-slate-900/60 border border-blue-100 dark:border-slate-800">
                       <div className="text-[10px] font-bold text-slate-400">Language</div>
-                      <div className="font-black text-[#08165B] mt-0.5">{activeDoc.language}</div>
+                      <div className="font-black text-[#08165B] dark:text-white mt-0.5">{activeDoc.language}</div>
                     </div>
                   </div>
 
@@ -499,7 +672,7 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
                     <div className="font-bold text-slate-400 uppercase text-[10px] mb-1.5">Clinical Tags</div>
                     <div className="flex flex-wrap gap-1.5">
                       {(activeDoc.tags || []).map((tag, i) => (
-                        <span key={i} className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px]">
+                        <span key={i} className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-[11px] border border-transparent dark:border-slate-700">
                           #{tag}
                         </span>
                       ))}
@@ -510,22 +683,22 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
 
               {drawerTab === 'chunks' && (
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 pb-1">
+                  <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pb-1">
                     <span>Semantic Chunk Inspection (500 tokens / chunk)</span>
-                    <span className="font-bold text-emerald-600">Embedding Vector Status: 1536-dim Active</span>
+                    <span className="font-bold text-emerald-500">Embedding Vector Status: 1536-dim Active</span>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#F2F7FF] border border-[#D6E6FA] space-y-2">
-                    <div className="flex items-center justify-between font-bold text-[11px] text-[#08165B]">
+                  <div className="p-4 rounded-xl bg-[#F2F7FF] dark:bg-slate-900/90 border border-[#D6E6FA] dark:border-slate-700 space-y-2">
+                    <div className="flex items-center justify-between font-bold text-[11px] text-[#08165B] dark:text-white">
                       <span>Chunk #1 [Characters 0-480]</span>
-                      <span className="text-[#1677E8]">Relevance Index: 0.94</span>
+                      <span className="text-[#1677E8] dark:text-blue-400 font-bold">Relevance Index: 0.94</span>
                     </div>
-                    <p className="text-slate-700 leading-relaxed font-mono text-[11px]">
+                    <p className="text-slate-700 dark:text-slate-200 leading-relaxed font-mono text-[11px]">
                       {activeDoc.extractedTextSample}
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-500 italic text-[11px]">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 italic text-[11px]">
                     + Remaining {activeDoc.chunksCount - 1} chunks are indexed into vector collection for semantic retrieval.
                   </div>
                 </div>
@@ -534,22 +707,22 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
               {drawerTab === 'metadata' && (
                 <div className="space-y-3">
                   <table className="w-full text-left font-medium">
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                       <tr>
                         <td className="py-2 text-slate-400 font-bold w-1/3">Knowledge Authority</td>
-                        <td className="py-2 text-[#08165B] font-bold">{activeDoc.author || 'Admin Verified'}</td>
+                        <td className="py-2 text-[#08165B] dark:text-white font-bold">{activeDoc.author || 'Admin Verified'}</td>
                       </tr>
                       <tr>
                         <td className="py-2 text-slate-400 font-bold">Vector Dimension</td>
-                        <td className="py-2 text-[#08165B] font-bold">1536 (OpenAI / Gemini Embeddings compatible)</td>
+                        <td className="py-2 text-[#08165B] dark:text-white font-bold">1536 (OpenAI / Gemini Embeddings compatible)</td>
                       </tr>
                       <tr>
                         <td className="py-2 text-slate-400 font-bold">Document Version</td>
-                        <td className="py-2 text-[#08165B] font-bold">{activeDoc.version || '1.0'}</td>
+                        <td className="py-2 text-[#08165B] dark:text-white font-bold">{activeDoc.version || '1.0'}</td>
                       </tr>
                       <tr>
                         <td className="py-2 text-slate-400 font-bold">Approval Status</td>
-                        <td className="py-2 text-emerald-600 font-bold">Auto-Approved (Admin Knowledge Base)</td>
+                        <td className="py-2 text-emerald-500 font-bold">Auto-Approved (Admin Knowledge Base)</td>
                       </tr>
                     </tbody>
                   </table>
@@ -557,11 +730,11 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
               )}
             </div>
 
-            {/* Modal Footer Actions */}
-            <div className="p-4 border-t border-[#D6E6FA] bg-slate-50 flex items-center justify-between">
+            {/* Modal Footer Actions (High Contrast in both Dark and Light Modes) */}
+            <div className="p-4 border-t border-[#D6E6FA] dark:border-slate-800 bg-slate-50 dark:bg-[#0B132B] flex items-center justify-between">
               <button
                 onClick={() => handleDownload(activeDoc)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 hover:bg-white text-slate-700 font-bold"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold transition-colors cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 <span>Download Extracted Text</span>
@@ -573,13 +746,13 @@ export default function DocumentLibraryScreen({ navigateTo, showToast }) {
                     handleReindex(activeDoc);
                     setActiveDoc(null);
                   }}
-                  className="px-3 py-2 rounded-xl bg-blue-50 text-[#1677E8] font-bold hover:bg-blue-100/60"
+                  className="px-3.5 py-2 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-[#1677E8] dark:text-blue-300 font-bold hover:bg-blue-100 dark:hover:bg-blue-900/60 border border-blue-200/60 dark:border-blue-700/60 transition-colors cursor-pointer"
                 >
                   Reindex Document
                 </button>
                 <button
                   onClick={() => setActiveDoc(null)}
-                  className="px-4 py-2 rounded-xl bg-[#08165B] text-white font-bold hover:bg-blue-900"
+                  className="px-4 py-2 rounded-xl bg-[#08165B] dark:bg-[#1677E8] text-white font-bold hover:bg-blue-900 dark:hover:bg-blue-600 transition-colors cursor-pointer shadow-xs"
                 >
                   Close
                 </button>

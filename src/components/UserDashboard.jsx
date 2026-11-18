@@ -7,6 +7,7 @@ import MinimalAIAssessmentCard from './dashboard/MinimalAIAssessmentCard';
 import MinimalLibraryView from './dashboard/MinimalLibraryView';
 import HelpModal from './dashboard/HelpModal';
 import ProfileSettingsModal from './dashboard/ProfileSettingsModal';
+import FloatingHealthChatbot from './dashboard/FloatingHealthChatbot';
 import { PORTAL_CATEGORIES } from '../data/portalCategories';
 import { userPortalStorage } from '../services/userPortalStorage';
 import {
@@ -491,6 +492,9 @@ export default function UserDashboard({ onNavigate }) {
           onLogout={handleLogout}
         />
       )}
+
+      {/* Floating Interactive Health AI Chatbot */}
+      <FloatingHealthChatbot user={user} activeCategory={activeCategory} />
 
     </div>
   );

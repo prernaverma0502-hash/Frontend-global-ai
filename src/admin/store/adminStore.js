@@ -315,7 +315,19 @@ function persistData(data) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch (e) {
-    console.error('Error persisting admin store to localStorage', e);
+    console.warn('LocalStorage quota limit reached, saving metadata without heavy base64 strings', e);
+    try {
+      const sanitizedData = {
+        ...data,
+        documents: (data.documents || []).map(doc => {
+          const { fileDataUrl, ...rest } = doc;
+          return rest;
+        })
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizedData));
+    } catch (err2) {
+      console.error('Failed to persist admin store', err2);
+    }
   }
 }
 

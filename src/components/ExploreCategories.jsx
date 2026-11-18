@@ -195,7 +195,7 @@ export default function ExploreCategories() {
           type="button"
           className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-blue-300 hover:border-blue-500 hover:bg-blue-50/50 text-[#0f2d59] font-bold text-xs transition-colors self-start sm:self-auto shrink-0 shadow-2xs cursor-pointer"
         >
-          <span>View All Categories (23)</span>
+          <span> All Categories</span>
           <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
         </button>
       </div>
