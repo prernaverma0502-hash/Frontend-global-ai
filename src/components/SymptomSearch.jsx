@@ -28,7 +28,7 @@ export default function SymptomSearch({ onSearch }) {
   };
 
   return (
-    <div id="search-section" className="relative z-20 max-w-[1380px] mx-auto px-3 sm:px-5 lg:px-6 -mt-5 sm:-mt-6">
+    <div id="search-section" className="relative z-20 max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6 -mt-5 sm:-mt-6">
       <div className="flex flex-col lg:flex-row items-center gap-2.5 sm:gap-3 w-full">
 
         {/* Main Search Bar with embedded orange button */}
@@ -64,9 +64,8 @@ export default function SymptomSearch({ onSearch }) {
           <button
             type="button"
             onClick={handleVoice}
-            className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white border border-blue-200 hover:border-blue-400 hover:bg-blue-50/50 shadow-2xs text-[#0f2d59] font-bold text-xs transition-all cursor-pointer ${
-              isListening ? 'ring-2 ring-blue-400 bg-blue-50' : ''
-            }`}
+            className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white border border-blue-200 hover:border-blue-400 hover:bg-blue-50/50 shadow-2xs text-[#0f2d59] font-bold text-xs transition-all cursor-pointer ${isListening ? 'ring-2 ring-blue-400 bg-blue-50' : ''
+              }`}
           >
             <Mic className="w-4 h-4 text-[#1d6fd8] shrink-0" />
             <span className="whitespace-nowrap">{isListening ? 'Listening...' : 'Voice Search'}</span>

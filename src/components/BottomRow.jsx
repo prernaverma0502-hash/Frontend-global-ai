@@ -52,7 +52,7 @@ export default function BottomRow() {
   ];
 
   return (
-    <section className="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6 py-2.5 pb-8">
+    <section className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6 py-2.5 pb-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
         
         {/* Left Column (6 of 12 cols): The Red – Yellow – Green Guide */}

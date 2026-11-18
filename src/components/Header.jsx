@@ -34,7 +34,7 @@ export default function Header({ onNavigate }) {
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 bg-white border-b border-blue-100 shadow-2xs">
-      <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-6">
+      <div className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex items-center justify-between h-[64px] gap-2">
           
           {/* Logo & Tagline */}

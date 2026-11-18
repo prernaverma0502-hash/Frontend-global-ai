@@ -114,7 +114,7 @@ export default function MiddleRow() {
   ];
 
   return (
-    <section id="founder" className="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6 py-4">
+    <section id="founder" className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6 py-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
         
         {/* Left Column (approx 34% width): A Message from the Founder */}
