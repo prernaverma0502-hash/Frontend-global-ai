@@ -57,7 +57,7 @@ export default function Header({ onNavigate }) {
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 bg-white dark:bg-[#0B132B] border-b border-blue-100 dark:border-slate-800 shadow-2xs transition-colors duration-200">
-      <div className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6">
+      <div className="max-w-[1440px] 2xl:max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-6 xl:px-8">
         <div className="flex items-center justify-between h-[64px] gap-2">
           
           {/* Logo & Tagline */}
