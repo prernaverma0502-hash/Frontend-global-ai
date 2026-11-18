@@ -58,11 +58,11 @@ export default function MinimalSidebar({
 
       {/* 260px Fixed Sidebar */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 w-[260px] border-r flex flex-col justify-between transition-colors duration-200 select-none lg:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-40 w-[260px] border-r flex flex-col justify-between transition-all duration-200 select-none ${
           isDark
             ? 'bg-[#0B132B] border-slate-800 text-slate-100'
             : 'bg-white border-slate-200 text-slate-800'
-        } ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        } ${mobileOpen ? 'translate-x-0 visible' : '-translate-x-full invisible lg:visible pointer-events-none lg:pointer-events-auto'} lg:translate-x-0`}
       >
         {/* Top Header & Navigation */}
         <div className="flex flex-col flex-1 min-h-0">

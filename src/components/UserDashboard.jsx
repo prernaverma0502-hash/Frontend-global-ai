@@ -218,7 +218,7 @@ export default function UserDashboard({ onNavigate }) {
 
   return (
     <div
-      className={`min-h-screen font-sans flex antialiased transition-colors duration-300 ${
+      className={`min-h-screen w-full max-w-full overflow-x-hidden font-sans flex antialiased transition-colors duration-300 ${
         isDark ? 'bg-[#080D1A] text-slate-100' : 'bg-[#F2F7FF] text-slate-900'
       }`}
     >
@@ -239,7 +239,7 @@ export default function UserDashboard({ onNavigate }) {
       />
 
       {/* 2. Main Workspace Layout */}
-      <div className="flex-1 flex flex-col min-w-0 lg:pl-[260px]">
+      <div className="flex-1 flex flex-col min-w-0 w-full max-w-full overflow-x-hidden lg:pl-[260px]">
         
         {/* Minimalist Top Bar with Ink-Bleed Theme Toggle */}
         <WorkspaceTopBar
@@ -250,7 +250,7 @@ export default function UserDashboard({ onNavigate }) {
         />
 
         {/* Dynamic Main View */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <main className="flex-1 w-full max-w-full p-2.5 xs:p-3 sm:p-6 lg:p-8 overflow-y-auto overflow-x-hidden">
           
           {activeView === 'library' ? (
             /* LIBRARY VIEW */
@@ -263,59 +263,59 @@ export default function UserDashboard({ onNavigate }) {
             />
           ) : (
             /* MAIN CENTERED HEALTH WORKSPACE - GlobalHealthAI Theme */
-            <div className="max-w-4xl mx-auto space-y-6 py-2 sm:py-4">
+            <div className="max-w-4xl w-full mx-auto space-y-4 sm:space-y-6 py-1 xs:py-2 sm:py-4 overflow-hidden">
               
               {/* Landing Page Clinical Trust Ribbon */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 p-2 rounded-2xl bg-white/70 dark:bg-[#0B132B]/80 backdrop-blur-xs border border-blue-100 dark:border-slate-800 shadow-2xs">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 xs:gap-2.5 p-1.5 xs:p-2 rounded-2xl bg-white/70 dark:bg-[#0B132B]/80 backdrop-blur-xs border border-blue-100 dark:border-slate-800 shadow-2xs w-full max-w-full overflow-hidden">
+                <div className="flex items-center gap-1.5 xs:gap-2 px-2 xs:px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left min-w-0 overflow-hidden">
                   <div className="w-6 h-6 rounded-lg bg-orange-100 dark:bg-orange-950/60 text-[#F04B0A] flex items-center justify-center shrink-0">
                     <Shield className="w-3.5 h-3.5" />
                   </div>
-                  <div className="leading-tight">
-                    <span className="block text-[11px] font-bold text-[#08165B] dark:text-white">Safety First</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Red-Flag Triage</span>
+                  <div className="leading-tight min-w-0 flex-1 overflow-hidden">
+                    <span className="block text-[10.5px] xs:text-[11px] font-bold text-[#08165B] dark:text-white truncate">Safety First</span>
+                    <span className="text-[9.5px] xs:text-[10px] text-slate-500 dark:text-slate-400 truncate block">Red-Flag Triage</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left">
+                <div className="flex items-center gap-1.5 xs:gap-2 px-2 xs:px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left min-w-0 overflow-hidden">
                   <div className="w-6 h-6 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-[#1677E8] flex items-center justify-center shrink-0">
                     <BookOpen className="w-3.5 h-3.5" />
                   </div>
-                  <div className="leading-tight">
-                    <span className="block text-[11px] font-bold text-[#08165B] dark:text-white">1,000 Cards</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Clinically Reviewed</span>
+                  <div className="leading-tight min-w-0 flex-1 overflow-hidden">
+                    <span className="block text-[10.5px] xs:text-[11px] font-bold text-[#08165B] dark:text-white truncate">1,000 Cards</span>
+                    <span className="text-[9.5px] xs:text-[10px] text-slate-500 dark:text-slate-400 truncate block">Clinically Reviewed</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left">
+                <div className="flex items-center gap-1.5 xs:gap-2 px-2 xs:px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left min-w-0 overflow-hidden">
                   <div className="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                     <Target className="w-3.5 h-3.5" />
                   </div>
-                  <div className="leading-tight">
-                    <span className="block text-[11px] font-bold text-[#08165B] dark:text-white">Specific Answers</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400">≈ 100 Words Guidance</span>
+                  <div className="leading-tight min-w-0 flex-1 overflow-hidden">
+                    <span className="block text-[10.5px] xs:text-[11px] font-bold text-[#08165B] dark:text-white truncate">Specific Answers</span>
+                    <span className="text-[9.5px] xs:text-[10px] text-slate-500 dark:text-slate-400 truncate block">≈ 100 Words Guidance</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left">
+                <div className="flex items-center gap-1.5 xs:gap-2 px-2 xs:px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left min-w-0 overflow-hidden">
                   <div className="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
                     <UserCheck className="w-3.5 h-3.5" />
                   </div>
-                  <div className="leading-tight">
-                    <span className="block text-[11px] font-bold text-[#08165B] dark:text-white">Dr P. Madhukar</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400">38 Yrs Clinical Practice</span>
+                  <div className="leading-tight min-w-0 flex-1 overflow-hidden">
+                    <span className="block text-[10.5px] xs:text-[11px] font-bold text-[#08165B] dark:text-white truncate">Dr P. Madhukar</span>
+                    <span className="text-[9.5px] xs:text-[10px] text-slate-500 dark:text-slate-400 truncate block">38 Yrs Clinical Practice</span>
                   </div>
                 </div>
               </div>
 
               {/* Clean Branding Greeting */}
-              <div className="text-center space-y-2 pt-2">
+              <div className="text-center space-y-2 pt-1 px-1">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-slate-800 border border-blue-200/70 dark:border-slate-700 text-[#1677E8] dark:text-blue-300 text-xs font-semibold shadow-2xs">
                   <Sparkles className="w-3.5 h-3.5 text-[#F04B0A]" />
                   <span>Physician-Curated Symptom Education</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-[#08165B] dark:text-white tracking-tight leading-snug">
+                <h1 className="text-xl xs:text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-[#08165B] dark:text-white tracking-tight leading-snug break-words">
                   Know Your Symptoms. <span className="text-[#F04B0A]">Understand the Possibilities.</span>
                 </h1>
                 
@@ -434,7 +434,7 @@ export default function UserDashboard({ onNavigate }) {
                         key={cat.id}
                         type="button"
                         onClick={() => setActiveCategory(cat)}
-                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer group flex flex-col justify-between ${
+                        className={`p-2.5 xs:p-3 rounded-xl border text-left transition-all cursor-pointer group flex flex-col justify-between min-w-0 overflow-hidden ${
                           isCurrent
                             ? 'bg-white dark:bg-[#0F1C36] border-[#1677E8] ring-2 ring-blue-500/20 shadow-sm'
                             : 'bg-white dark:bg-[#0B132B]/80 hover:bg-blue-50/40 dark:hover:bg-[#0F1C36] border-blue-100 dark:border-slate-800 hover:border-blue-300 dark:hover:border-slate-700 shadow-2xs hover:shadow-xs'
