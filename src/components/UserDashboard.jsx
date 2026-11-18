@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import MinimalSidebar from './dashboard/MinimalSidebar';
 import WorkspaceTopBar from './dashboard/WorkspaceTopBar';
 import MinimalAIAssessmentCard from './dashboard/MinimalAIAssessmentCard';
@@ -24,6 +25,7 @@ import {
 
 export default function UserDashboard({ onNavigate }) {
   const { user, logout } = useAuth();
+  const { isDark } = useTheme();
 
   // Auth gate
   const isAuth = user && (user.role === 'user' || user.role === 'admin');
@@ -214,7 +216,11 @@ export default function UserDashboard({ onNavigate }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F7FF] font-sans text-slate-900 flex antialiased selection:bg-blue-100 selection:text-blue-900">
+    <div
+      className={`min-h-screen font-sans flex antialiased transition-colors duration-300 ${
+        isDark ? 'bg-[#080D1A] text-slate-100' : 'bg-[#F2F7FF] text-slate-900'
+      }`}
+    >
       
       {/* 1. Left Sidebar (260px fixed, clean & structured) */}
       <MinimalSidebar
@@ -234,7 +240,7 @@ export default function UserDashboard({ onNavigate }) {
       {/* 2. Main Workspace Layout */}
       <div className="flex-1 flex flex-col min-w-0 lg:pl-[260px]">
         
-        {/* Minimalist Top Bar */}
+        {/* Minimalist Top Bar with Ink-Bleed Theme Toggle */}
         <WorkspaceTopBar
           activeCategory={activeCategory}
           onSelectCategory={handleSelectCategory}
@@ -259,63 +265,63 @@ export default function UserDashboard({ onNavigate }) {
             <div className="max-w-4xl mx-auto space-y-6 py-2 sm:py-4">
               
               {/* Landing Page Clinical Trust Ribbon */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 p-2 rounded-2xl bg-white/70 backdrop-blur-xs border border-blue-100 shadow-2xs">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 border border-blue-100/60 text-left">
-                  <div className="w-6 h-6 rounded-lg bg-orange-100 text-[#F04B0A] flex items-center justify-center shrink-0">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 p-2 rounded-2xl bg-white/70 dark:bg-[#0B132B]/80 backdrop-blur-xs border border-blue-100 dark:border-slate-800 shadow-2xs">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left">
+                  <div className="w-6 h-6 rounded-lg bg-orange-100 dark:bg-orange-950/60 text-[#F04B0A] flex items-center justify-center shrink-0">
                     <Shield className="w-3.5 h-3.5" />
                   </div>
                   <div className="leading-tight">
-                    <span className="block text-[11px] font-bold text-[#08165B]">Safety First</span>
-                    <span className="text-[10px] text-slate-500">Red-Flag Triage</span>
+                    <span className="block text-[11px] font-bold text-[#08165B] dark:text-white">Safety First</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Red-Flag Triage</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 border border-blue-100/60 text-left">
-                  <div className="w-6 h-6 rounded-lg bg-blue-100 text-[#1677E8] flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left">
+                  <div className="w-6 h-6 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-[#1677E8] flex items-center justify-center shrink-0">
                     <BookOpen className="w-3.5 h-3.5" />
                   </div>
                   <div className="leading-tight">
-                    <span className="block text-[11px] font-bold text-[#08165B]">1,000 Cards</span>
-                    <span className="text-[10px] text-slate-500">Clinically Reviewed</span>
+                    <span className="block text-[11px] font-bold text-[#08165B] dark:text-white">1,000 Cards</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Clinically Reviewed</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 border border-blue-100/60 text-left">
-                  <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left">
+                  <div className="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                     <Target className="w-3.5 h-3.5" />
                   </div>
                   <div className="leading-tight">
-                    <span className="block text-[11px] font-bold text-[#08165B]">Specific Answers</span>
-                    <span className="text-[10px] text-slate-500">≈ 100 Words Guidance</span>
+                    <span className="block text-[11px] font-bold text-[#08165B] dark:text-white">Specific Answers</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">≈ 100 Words Guidance</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 border border-blue-100/60 text-left">
-                  <div className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50/60 dark:bg-slate-800/60 border border-blue-100/60 dark:border-slate-700/60 text-left">
+                  <div className="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
                     <UserCheck className="w-3.5 h-3.5" />
                   </div>
                   <div className="leading-tight">
-                    <span className="block text-[11px] font-bold text-[#08165B]">Dr P. Madhukar</span>
-                    <span className="text-[10px] text-slate-500">38 Yrs Clinical Practice</span>
+                    <span className="block text-[11px] font-bold text-[#08165B] dark:text-white">Dr P. Madhukar</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">38 Yrs Clinical Practice</span>
                   </div>
                 </div>
               </div>
 
               {/* Clean Branding Greeting */}
               <div className="text-center space-y-2 pt-2">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/70 text-[#1677E8] text-xs font-semibold shadow-2xs">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-slate-800 border border-blue-200/70 dark:border-slate-700 text-[#1677E8] dark:text-blue-300 text-xs font-semibold shadow-2xs">
                   <Sparkles className="w-3.5 h-3.5 text-[#F04B0A]" />
                   <span>Physician-Curated Symptom Education</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-[#08165B] tracking-tight leading-snug">
+                <h1 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-[#08165B] dark:text-white tracking-tight leading-snug">
                   Know Your Symptoms. <span className="text-[#F04B0A]">Understand the Possibilities.</span>
                 </h1>
                 
-                <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
                   {activeCategory ? (
                     <>
-                      Focused assessment active for <strong className="text-[#08165B] font-bold">{activeCategory.name}</strong>. Describe symptoms, lab tests, or questions below.
+                      Focused assessment active for <strong className="text-[#08165B] dark:text-blue-300 font-bold">{activeCategory.name}</strong>. Describe symptoms, lab tests, or questions below.
                     </>
                   ) : (
                     'Describe your symptoms, ask about lab reports, or check clinical red flags for safe and reliable guidance.'
@@ -327,7 +333,7 @@ export default function UserDashboard({ onNavigate }) {
               <div className="space-y-3">
                 <form
                   onSubmit={handleAnalyzeSymptoms}
-                  className="bg-white rounded-2xl border border-blue-200/90 shadow-[0_8px_30px_rgba(8,22,91,0.06)] hover:border-blue-400 focus-within:border-[#1677E8] focus-within:ring-2 focus-within:ring-blue-500/15 transition-all p-3 sm:p-4"
+                  className="bg-white dark:bg-[#0F1C36] rounded-2xl border border-blue-200/90 dark:border-slate-700 shadow-[0_8px_30px_rgba(8,22,91,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:border-blue-400 dark:hover:border-slate-600 focus-within:border-[#1677E8] dark:focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/15 transition-all p-3 sm:p-4"
                 >
                   <textarea
                     rows={3}
@@ -344,12 +350,12 @@ export default function UserDashboard({ onNavigate }) {
                         ? `Describe what you are experiencing in ${activeCategory.name.toLowerCase()}... (e.g., mild fever and cough for 3 days, headache, or blood sugar questions)`
                         : 'What symptom are you worried about? e.g. cough, headache, stomach pain, chest heaviness, fever...'
                     }
-                    className="w-full text-slate-800 placeholder-slate-400 text-sm sm:text-base font-normal resize-none focus:outline-none bg-transparent"
+                    className="w-full text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm sm:text-base font-normal resize-none focus:outline-none bg-transparent"
                   />
 
                   {/* Input Actions Footer */}
-                  <div className="flex items-center justify-between pt-2.5 border-t border-slate-100">
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                  <div className="flex items-center justify-between pt-2.5 border-t border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
                       <span className="hidden sm:inline">Press Enter to check • Shift+Enter for newline</span>
                     </div>
 
@@ -362,7 +368,7 @@ export default function UserDashboard({ onNavigate }) {
                         className={`p-2 rounded-xl transition-colors cursor-pointer ${
                           isListening
                             ? 'bg-red-500 text-white animate-pulse'
-                            : 'text-[#1677E8] hover:text-[#08165B] hover:bg-blue-50 border border-blue-100'
+                            : 'text-[#1677E8] dark:text-blue-400 hover:text-[#08165B] dark:hover:text-blue-200 hover:bg-blue-50 dark:hover:bg-slate-800 border border-blue-100 dark:border-slate-700'
                         }`}
                       >
                         <Mic className="w-4 h-4" />
@@ -383,13 +389,13 @@ export default function UserDashboard({ onNavigate }) {
 
                 {/* Example Prompt Chips */}
                 <div className="flex flex-wrap items-center gap-2 pt-0.5">
-                  <span className="text-[11px] font-bold text-slate-400">Try asking:</span>
+                  <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500">Try asking:</span>
                   {exampleChips.map((chip, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => handleSelectPromptChip(chip)}
-                      className="px-3 py-1 rounded-full bg-white hover:bg-blue-50/70 border border-blue-200/80 text-[#08165B] hover:text-[#1677E8] text-xs font-medium transition-all shadow-2xs hover:shadow-xs cursor-pointer truncate max-w-xs"
+                      className="px-3 py-1 rounded-full bg-white dark:bg-slate-800/90 hover:bg-blue-50/70 dark:hover:bg-slate-700/80 border border-blue-200/80 dark:border-slate-700 text-[#08165B] dark:text-slate-200 hover:text-[#1677E8] dark:hover:text-blue-300 text-xs font-medium transition-all shadow-2xs hover:shadow-xs cursor-pointer truncate max-w-xs"
                     >
                       {chip}
                     </button>
@@ -401,10 +407,10 @@ export default function UserDashboard({ onNavigate }) {
               <div className="pt-1">
                 <div className="flex items-center justify-between px-1 mb-2.5">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-[#08165B] uppercase tracking-wider">
+                    <span className="text-xs font-bold text-[#08165B] dark:text-white uppercase tracking-wider">
                       Explore by Health Focus
                     </span>
-                    <span className="text-[11px] text-slate-500">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
                       {activeCategory ? `(Active: ${activeCategory.name})` : '(Select to focus assessment)'}
                     </span>
                   </div>
@@ -412,7 +418,7 @@ export default function UserDashboard({ onNavigate }) {
                     <button
                       type="button"
                       onClick={() => setActiveCategory(null)}
-                      className="text-xs text-[#1677E8] hover:text-[#08165B] font-bold transition-colors cursor-pointer hover:underline"
+                      className="text-xs text-[#1677E8] dark:text-blue-400 hover:text-[#08165B] dark:hover:text-white font-bold transition-colors cursor-pointer hover:underline"
                     >
                       ✕ Clear Focus (General)
                     </button>
@@ -429,18 +435,18 @@ export default function UserDashboard({ onNavigate }) {
                         onClick={() => setActiveCategory(cat)}
                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer group flex flex-col justify-between ${
                           isCurrent
-                            ? 'bg-white border-[#1677E8] ring-2 ring-blue-500/20 shadow-sm'
-                            : 'bg-white hover:bg-blue-50/40 border-blue-100 hover:border-blue-300 shadow-2xs hover:shadow-xs'
+                            ? 'bg-white dark:bg-[#0F1C36] border-[#1677E8] ring-2 ring-blue-500/20 shadow-sm'
+                            : 'bg-white dark:bg-[#0B132B]/80 hover:bg-blue-50/40 dark:hover:bg-[#0F1C36] border-blue-100 dark:border-slate-800 hover:border-blue-300 dark:hover:border-slate-700 shadow-2xs hover:shadow-xs'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
                           <span className={`w-2.5 h-2.5 rounded-full ${cat.dotColor} shrink-0`} />
                           {isCurrent && <Check className="w-3.5 h-3.5 text-[#1677E8] stroke-[2.5]" />}
                         </div>
-                        <span className="text-xs font-bold text-[#08165B] leading-tight group-hover:text-[#1677E8] transition-colors truncate">
+                        <span className="text-xs font-bold text-[#08165B] dark:text-white leading-tight group-hover:text-[#1677E8] dark:group-hover:text-blue-400 transition-colors truncate">
                           {cat.name.replace('My ', '')}
                         </span>
-                        <span className="text-[10px] text-slate-500 line-clamp-1 mt-0.5">
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
                           {cat.description}
                         </span>
                       </button>
@@ -452,10 +458,10 @@ export default function UserDashboard({ onNavigate }) {
               {/* Demo AI Triage Output Card */}
               <div className="pt-2 space-y-2">
                 <div className="flex items-center justify-between px-1">
-                  <span className="text-xs font-bold text-[#08165B] uppercase tracking-wider">
+                  <span className="text-xs font-bold text-[#08165B] dark:text-white uppercase tracking-wider">
                     Clinical Guidance & Triage Assessment
                   </span>
-                  <span className="text-[11px] font-semibold text-[#1677E8] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/60">
+                  <span className="text-[11px] font-semibold text-[#1677E8] dark:text-blue-300 bg-blue-50 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-blue-200/60 dark:border-slate-700">
                     Live Demo Mode
                   </span>
                 </div>

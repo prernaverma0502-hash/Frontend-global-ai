@@ -1,4 +1,6 @@
 import React from 'react';
+import ThemeToggle from '../common/ThemeToggle';
+import { useTheme } from '../../context/ThemeContext';
 import {
   LayoutDashboard,
   MessageSquarePlus,
@@ -146,8 +148,17 @@ export default function Sidebar({
           </nav>
         </div>
 
-        {/* Bottom Section: Collapse Toggle & Clinical Trust Badge */}
+        {/* Bottom Section: Theme Toggle, Collapse & Clinical Trust Badge */}
         <div className="p-3 border-t border-[#D6E6FA]/80 space-y-2">
+          
+          {/* Organic Ink Bleed Theme Toggle */}
+          {(!isCollapsed || mobileOpen) ? (
+            <ThemeToggle variant="sidebar" />
+          ) : (
+            <div className="flex justify-center">
+              <ThemeToggle variant="topbar" />
+            </div>
+          )}
           
           {/* Clinical Authority Note */}
           {(!isCollapsed || mobileOpen) && (

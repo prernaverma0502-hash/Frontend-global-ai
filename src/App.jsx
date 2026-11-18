@@ -9,6 +9,7 @@ import LoginPage from './components/LoginPage';
 import UserDashboard from './components/UserDashboard';
 import AdminLayout from './admin/components/AdminLayout';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 function MainRouter() {
   const [currentPath, setCurrentPath] = useState(() => {
@@ -119,8 +120,10 @@ function MainRouter() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MainRouter />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <MainRouter />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

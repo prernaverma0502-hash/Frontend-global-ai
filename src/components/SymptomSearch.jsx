@@ -28,7 +28,7 @@ export default function SymptomSearch({ onSearch }) {
   };
 
   return (
-    <div id="search-section" className="relative z-20 max-w-[1380px] mx-auto px-3 sm:px-5 lg:px-6 -mt-5 sm:-mt-6">
+    <div id="search-section" className="relative z-20 max-w-[1380px] mx-auto px-3 sm:px-5 lg:px-6 -mt-5 sm:-mt-6 scroll-mt-24">
       <div className="flex flex-col lg:flex-row items-center gap-2.5 sm:gap-3 w-full">
 
         {/* Main Search Bar with embedded orange button */}

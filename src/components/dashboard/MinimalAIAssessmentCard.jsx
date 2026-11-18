@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 import {
   ShieldCheck,
   CheckCircle2,
@@ -17,6 +18,7 @@ export default function MinimalAIAssessmentCard({
   customQuery = '',
   onSaveReport
 }) {
+  const { isDark } = useTheme();
   const [saved, setSaved] = useState(false);
 
   const scenario = DEMO_TRIAGE_SCENARIOS[activeSeverity] || DEMO_TRIAGE_SCENARIOS.GREEN;
@@ -46,10 +48,16 @@ export default function MinimalAIAssessmentCard({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-blue-200/90 shadow-[0_4px_25px_rgba(8,22,91,0.05)] p-6 sm:p-7 space-y-5 animate-in fade-in duration-200">
+    <div
+      className={`rounded-2xl border p-6 sm:p-7 space-y-5 animate-in fade-in duration-200 transition-colors duration-200 ${
+        isDark
+          ? 'bg-[#0F1C36] border-slate-700 shadow-[0_4px_25px_rgba(0,0,0,0.4)] text-slate-100'
+          : 'bg-white border-blue-200/90 shadow-[0_4px_25px_rgba(8,22,91,0.05)] text-slate-900'
+      }`}
+    >
       
       {/* 1. Header: Severity Selector Tabs (Normal / Caution / Urgent) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
         
         {/* Severity Badge Indicator */}
         <div className="flex items-center gap-2">
@@ -60,15 +68,15 @@ export default function MinimalAIAssessmentCard({
         </div>
 
         {/* Interactive Severity Toggle for Client Demo */}
-        <div className="flex items-center bg-blue-50/70 border border-blue-100 rounded-xl p-1 text-xs font-medium self-start sm:self-auto">
-          <span className="text-[10px] uppercase font-bold text-[#08165B] px-2 hidden md:inline">Demo Modes:</span>
+        <div className="flex items-center bg-blue-50/70 dark:bg-slate-800/80 border border-blue-100 dark:border-slate-700 rounded-xl p-1 text-xs font-medium self-start sm:self-auto">
+          <span className="text-[10px] uppercase font-bold text-[#08165B] dark:text-blue-300 px-2 hidden md:inline">Demo Modes:</span>
           <button
             type="button"
             onClick={() => onSelectSeverity('GREEN')}
             className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
               activeSeverity === 'GREEN'
-                ? 'bg-white text-emerald-800 font-bold shadow-2xs'
-                : 'text-slate-500 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 font-bold shadow-2xs'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             🟢 Normal
@@ -78,8 +86,8 @@ export default function MinimalAIAssessmentCard({
             onClick={() => onSelectSeverity('YELLOW')}
             className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
               activeSeverity === 'YELLOW'
-                ? 'bg-white text-amber-900 font-bold shadow-2xs'
-                : 'text-slate-500 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-700 text-amber-900 dark:text-amber-300 font-bold shadow-2xs'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             🟡 Mild Caution
@@ -89,8 +97,8 @@ export default function MinimalAIAssessmentCard({
             onClick={() => onSelectSeverity('RED')}
             className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
               activeSeverity === 'RED'
-                ? 'bg-white text-red-800 font-bold shadow-2xs'
-                : 'text-slate-500 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-700 text-red-800 dark:text-red-300 font-bold shadow-2xs'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             🔴 Urgent
@@ -101,24 +109,24 @@ export default function MinimalAIAssessmentCard({
 
       {/* 2. Assessment Title & Plain-Language Summary */}
       <div className="space-y-2">
-        <h3 className="text-base sm:text-lg font-bold text-[#08165B] tracking-tight">
+        <h3 className="text-base sm:text-lg font-bold text-[#08165B] dark:text-white tracking-tight">
           {scenario.title}
         </h3>
         
-        <p className="text-sm text-slate-600 leading-relaxed font-normal">
+        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
           {scenario.summary}
         </p>
       </div>
 
       {/* 3. Bulleted Safe Next Steps */}
       <div className="space-y-2.5 pt-1">
-        <div className="text-xs font-bold uppercase tracking-wider text-[#08165B]">
+        <div className="text-xs font-bold uppercase tracking-wider text-[#08165B] dark:text-white">
           Safe Next Steps:
         </div>
         
         <div className="space-y-2">
           {scenario.steps.map((step, idx) => (
-            <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1677E8] shrink-0 mt-2" />
               <span>{step}</span>
             </div>
@@ -127,16 +135,16 @@ export default function MinimalAIAssessmentCard({
       </div>
 
       {/* 4. Action Buttons (Save, PDF, Share) */}
-      <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100">
+      <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 dark:border-slate-800">
         
         <div className="flex items-center gap-2">
           {/* Save to Library */}
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 hover:border-blue-300 bg-white hover:bg-blue-50/50 text-xs font-medium text-[#08165B] transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-slate-600 bg-white dark:bg-slate-800 hover:bg-blue-50/50 dark:hover:bg-slate-700 text-xs font-medium text-[#08165B] dark:text-slate-200 transition-colors cursor-pointer"
           >
-            {saved ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Bookmark className="w-3.5 h-3.5 text-[#1677E8]" />}
+            {saved ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Bookmark className="w-3.5 h-3.5 text-[#1677E8]" />}
             <span>{saved ? 'Saved to Library' : 'Save to Library'}</span>
           </button>
 
@@ -144,10 +152,10 @@ export default function MinimalAIAssessmentCard({
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 hover:border-blue-300 bg-white hover:bg-blue-50/50 text-xs font-medium text-[#08165B] transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-slate-600 bg-white dark:bg-slate-800 hover:bg-blue-50/50 dark:hover:bg-slate-700 text-xs font-medium text-[#08165B] dark:text-slate-200 transition-colors cursor-pointer"
             title="Download PDF or Print"
           >
-            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <Download className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             <span>Download Summary</span>
           </button>
 
@@ -155,16 +163,16 @@ export default function MinimalAIAssessmentCard({
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 hover:border-blue-300 bg-white hover:bg-blue-50/50 text-xs font-medium text-[#08165B] transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-slate-600 bg-white dark:bg-slate-800 hover:bg-blue-50/50 dark:hover:bg-slate-700 text-xs font-medium text-[#08165B] dark:text-slate-200 transition-colors cursor-pointer"
             title="Share via WhatsApp"
           >
-            <Share2 className="w-3.5 h-3.5 text-slate-500" />
+            <Share2 className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             <span>Share</span>
           </button>
         </div>
 
         {/* Small Verified Footer Badge */}
-        <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
+        <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
           <ShieldCheck className="w-3.5 h-3.5 text-[#1677E8]" />
           <span>Grounded in Verified Clinical Research PDFs • No Unverified Advice</span>
         </div>

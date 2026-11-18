@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 import {
   Search,
   BookMarked,
@@ -20,6 +21,7 @@ export default function MinimalLibraryView({
   onDeleteReport,
   onDeleteConversation
 }) {
+  const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState('reports'); // 'reports' | 'conversations'
   const [search, setSearch] = useState('');
   const [previewReport, setPreviewReport] = useState(null);
@@ -47,23 +49,23 @@ export default function MinimalLibraryView({
     <div className="space-y-6 max-w-4xl mx-auto py-4 animate-in fade-in duration-200">
       
       {/* Header */}
-      <div className="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="border-b border-slate-200 dark:border-slate-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
             Personal Health Library
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             View saved AI health assessments, physician consultation summaries, and past chats.
           </p>
         </div>
 
         {/* Tab switch */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+        <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
           <button
             type="button"
             onClick={() => setActiveTab('reports')}
             className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-              activeTab === 'reports' ? 'bg-white text-slate-900 shadow-2xs font-bold' : 'text-slate-500 hover:text-slate-900'
+              activeTab === 'reports' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             Saved Reports ({reports.length})
@@ -72,7 +74,7 @@ export default function MinimalLibraryView({
             type="button"
             onClick={() => setActiveTab('conversations')}
             className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-              activeTab === 'conversations' ? 'bg-white text-slate-900 shadow-2xs font-bold' : 'text-slate-500 hover:text-slate-900'
+              activeTab === 'conversations' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             Past Chats ({conversations.length})
@@ -87,50 +89,50 @@ export default function MinimalLibraryView({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by topic, symptom, or summary..."
-          className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0D9488] shadow-2xs"
+          className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white dark:bg-[#0F1C36] border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-[#1677E8] shadow-2xs"
         />
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
       </div>
 
       {/* Reports List */}
       {activeTab === 'reports' && (
         <div className="space-y-3">
           {filteredReports.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-2">
-              <FileText className="w-8 h-8 text-slate-300 mx-auto" />
-              <div className="text-xs font-semibold text-slate-700">No saved reports found</div>
-              <p className="text-[11px] text-slate-400">
+            <div className="bg-white dark:bg-[#0F1C36] rounded-2xl border border-slate-200 dark:border-slate-800 p-10 text-center space-y-2">
+              <FileText className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
+              <div className="text-xs font-semibold text-slate-700 dark:text-slate-300">No saved reports found</div>
+              <p className="text-[11px] text-slate-400 dark:text-slate-500">
                 After generating an AI triage assessment, click "Save to Library" to keep it here.
               </p>
             </div>
           ) : (
             filteredReports.map((rep) => {
               const severityBadge = {
-                GREEN: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-                YELLOW: 'bg-amber-50 text-amber-700 border-amber-200',
-                RED: 'bg-red-50 text-red-700 border-red-200'
+                GREEN: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
+                YELLOW: 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800',
+                RED: 'bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800'
               }[rep.urgency || 'GREEN'];
 
               return (
                 <div
                   key={rep.id}
-                  className="bg-white rounded-xl border border-slate-200 hover:border-slate-300 p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
+                  className="bg-white dark:bg-[#0F1C36] rounded-xl border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
                 >
                   <div className="space-y-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${severityBadge}`}>
                         {rep.urgency === 'RED' ? 'Urgent' : rep.urgency === 'YELLOW' ? 'Caution' : 'Normal'}
                       </span>
-                      <span className="text-[11px] text-slate-400">
+                      <span className="text-[11px] text-slate-400 dark:text-slate-500">
                         {new Date(rep.date).toLocaleDateString()}
                       </span>
                     </div>
 
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#0D9488] transition-colors truncate">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#1677E8] transition-colors truncate">
                       {rep.title}
                     </h4>
 
-                    <p className="text-xs text-slate-500 line-clamp-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
                       {rep.summaryText}
                     </p>
                   </div>
@@ -139,7 +141,7 @@ export default function MinimalLibraryView({
                     <button
                       type="button"
                       onClick={() => setPreviewReport(rep)}
-                      className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer text-xs flex items-center gap-1 font-medium"
+                      className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer text-xs flex items-center gap-1 font-medium"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       <span>View</span>
@@ -148,7 +150,7 @@ export default function MinimalLibraryView({
                     <button
                       type="button"
                       onClick={() => handlePrint(rep)}
-                      className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer"
+                      className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
                       title="Download PDF"
                     >
                       <Download className="w-3.5 h-3.5" />
@@ -157,7 +159,7 @@ export default function MinimalLibraryView({
                     <button
                       type="button"
                       onClick={() => handleShare(rep)}
-                      className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer"
+                      className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
                       title="Share"
                     >
                       <Share2 className="w-3.5 h-3.5" />
@@ -166,7 +168,7 @@ export default function MinimalLibraryView({
                     <button
                       type="button"
                       onClick={() => onDeleteReport && onDeleteReport(rep.id)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                      className="p-1.5 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
                       title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -183,10 +185,10 @@ export default function MinimalLibraryView({
       {activeTab === 'conversations' && (
         <div className="space-y-3">
           {filteredConversations.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-2">
-              <Clock className="w-8 h-8 text-slate-300 mx-auto" />
-              <div className="text-xs font-semibold text-slate-700">No past conversations</div>
-              <p className="text-[11px] text-slate-400">
+            <div className="bg-white dark:bg-[#0F1C36] rounded-2xl border border-slate-200 dark:border-slate-800 p-10 text-center space-y-2">
+              <Clock className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
+              <div className="text-xs font-semibold text-slate-700 dark:text-slate-300">No past conversations</div>
+              <p className="text-[11px] text-slate-400 dark:text-slate-500">
                 Your past consultations will appear here automatically.
               </p>
             </div>
@@ -195,28 +197,28 @@ export default function MinimalLibraryView({
               <div
                 key={conv.id}
                 onClick={() => onOpenConversation(conv.id)}
-                className="bg-white rounded-xl border border-slate-200 hover:border-slate-300 p-4 shadow-2xs hover:shadow-xs transition-all flex items-center justify-between gap-3 cursor-pointer group"
+                className="bg-white dark:bg-[#0F1C36] rounded-xl border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 p-4 shadow-2xs hover:shadow-xs transition-all flex items-center justify-between gap-3 cursor-pointer group"
               >
                 <div className="space-y-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
                       {conv.categoryName || 'My Symptoms'}
                     </span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-slate-400 dark:text-slate-500">
                       {new Date(conv.updatedAt || conv.date).toLocaleDateString()}
                     </span>
                   </div>
 
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#0D9488] transition-colors truncate">
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#1677E8] transition-colors truncate">
                     {conv.title}
                   </h4>
 
-                  <p className="text-xs text-slate-500 line-clamp-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
                     {conv.preview}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-1.5 shrink-0 text-xs font-semibold text-[#0D9488] group-hover:translate-x-1 transition-transform">
+                <div className="flex items-center gap-1.5 shrink-0 text-xs font-semibold text-[#1677E8] group-hover:translate-x-1 transition-transform">
                   <span>Open</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
