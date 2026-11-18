@@ -152,7 +152,7 @@ export default function LoginPage({ onNavigate }) {
 
   return (
     <div
-      className={`h-screen max-h-screen w-full relative flex items-center justify-center p-3 sm:p-5 lg:p-6 overflow-y-auto lg:overflow-hidden font-sans antialiased transition-colors duration-300 selection:bg-blue-100 selection:text-blue-900 ${
+      className={`min-h-screen w-full relative flex items-center justify-center p-3 sm:p-5 lg:p-6 overflow-y-auto font-sans antialiased transition-colors duration-300 selection:bg-blue-100 selection:text-blue-900 ${
         isDark
           ? 'bg-gradient-to-br from-[#080D1A] via-[#0B132B] to-[#040814] text-slate-100'
           : 'bg-gradient-to-br from-[#EEF5FF] via-[#F6FAFF] to-[#E5F0FF] text-[#08165B]'
@@ -548,7 +548,7 @@ export default function LoginPage({ onNavigate }) {
       {/* ================= SIGN UP / REGISTER MODAL POPUP ================= */}
       {showRegisterModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className={`w-full max-w-[460px] backdrop-blur-2xl rounded-3xl p-6 sm:p-7 border shadow-2xl relative animate-in zoom-in-95 duration-200 ${
+          <div className={`w-full max-w-[460px] max-h-[92vh] overflow-y-auto backdrop-blur-2xl rounded-3xl p-6 sm:p-7 border shadow-2xl relative animate-in zoom-in-95 duration-200 ${
             isDark
               ? 'bg-[#0F1C36] border-slate-700 text-slate-100'
               : 'bg-white/95 border-blue-200 text-slate-800'

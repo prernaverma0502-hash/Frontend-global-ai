@@ -316,7 +316,7 @@ export default function UserManagementScreen({ navigateTo, showToast }) {
       {/* MODAL 1: ADD USER */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-[#0F1C36] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#D6E6FA] dark:border-slate-700 space-y-4">
+          <div className="bg-white dark:bg-[#0F1C36] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#D6E6FA] dark:border-slate-700 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <h3 className="text-base font-black text-[#08165B] dark:text-white">Add New GlobalHealthAI User</h3>
               <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
@@ -384,7 +384,7 @@ export default function UserManagementScreen({ navigateTo, showToast }) {
       {/* MODAL 2: EDIT USER */}
       {editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-[#0F1C36] rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#D6E6FA] dark:border-slate-700 space-y-4">
+          <div className="bg-white dark:bg-[#0F1C36] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-[#D6E6FA] dark:border-slate-700 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <h3 className="text-base font-black text-[#08165B] dark:text-white">Edit User Account</h3>
               <button onClick={() => setEditingUser(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
