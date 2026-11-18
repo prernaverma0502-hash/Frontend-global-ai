@@ -49,7 +49,7 @@ export default function MinimalAIAssessmentCard({
 
   return (
     <div
-      className={`rounded-2xl border p-6 sm:p-7 space-y-5 animate-in fade-in duration-200 transition-colors duration-200 ${
+      className={`rounded-2xl border p-3.5 xs:p-4 sm:p-6 lg:p-7 space-y-4 sm:space-y-5 animate-in fade-in duration-200 transition-colors duration-200 w-full max-w-full overflow-hidden ${
         isDark
           ? 'bg-[#0F1C36] border-slate-700 shadow-[0_4px_25px_rgba(0,0,0,0.4)] text-slate-100'
           : 'bg-white border-blue-200/90 shadow-[0_4px_25px_rgba(8,22,91,0.05)] text-slate-900'
@@ -60,7 +60,7 @@ export default function MinimalAIAssessmentCard({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
         
         {/* Severity Badge Indicator */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${scenario.badgeClass}`}>
             <span className={`w-2 h-2 rounded-full ${scenario.dotClass}`} />
             <span>{scenario.label}</span>
@@ -68,7 +68,7 @@ export default function MinimalAIAssessmentCard({
         </div>
 
         {/* Interactive Severity Toggle for Client Demo */}
-        <div className="flex items-center bg-blue-50/70 dark:bg-slate-800/80 border border-blue-100 dark:border-slate-700 rounded-xl p-1 text-xs font-medium self-start sm:self-auto">
+        <div className="flex flex-wrap sm:flex-nowrap items-center bg-blue-50/70 dark:bg-slate-800/80 border border-blue-100 dark:border-slate-700 rounded-xl p-0.5 sm:p-1 text-xs font-medium self-start sm:self-auto max-w-full">
           <span className="text-[10px] uppercase font-bold text-[#08165B] dark:text-blue-300 px-2 hidden md:inline">Demo Modes:</span>
           <button
             type="button"
@@ -137,7 +137,7 @@ export default function MinimalAIAssessmentCard({
       {/* 4. Action Buttons (Save, PDF, Share) */}
       <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 dark:border-slate-800">
         
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Save to Library */}
           <button
             type="button"
@@ -172,9 +172,9 @@ export default function MinimalAIAssessmentCard({
         </div>
 
         {/* Small Verified Footer Badge */}
-        <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#1677E8]" />
-          <span>Grounded in Verified Clinical Research PDFs • No Unverified Advice</span>
+        <div className="flex items-start sm:items-center gap-1.5 text-[10.5px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium max-w-full">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#1677E8] shrink-0 mt-0.5 sm:mt-0" />
+          <span className="break-words leading-tight">Grounded in Verified Clinical Research PDFs • No Unverified Advice</span>
         </div>
 
       </div>

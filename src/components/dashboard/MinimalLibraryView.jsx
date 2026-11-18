@@ -46,7 +46,7 @@ export default function MinimalLibraryView({
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto py-4 animate-in fade-in duration-200">
+    <div className="space-y-6 max-w-4xl w-full mx-auto py-4 animate-in fade-in duration-200 overflow-hidden">
       
       {/* Header */}
       <div className="border-b border-slate-200 dark:border-slate-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
