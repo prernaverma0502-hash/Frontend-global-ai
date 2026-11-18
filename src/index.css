@@ -36,51 +36,67 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
 
 @keyframes orbFloat1 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0px, 0px) scale(1);
   }
+
   33% {
     transform: translate(65px, -75px) scale(1.15);
   }
+
   66% {
     transform: translate(-45px, 45px) scale(0.92);
   }
 }
 
 @keyframes orbFloat2 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0px, 0px) scale(1);
   }
+
   33% {
     transform: translate(-75px, 55px) scale(1.12);
   }
+
   66% {
     transform: translate(50px, -45px) scale(0.9);
   }
 }
 
 @keyframes orbFloat3 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0px, 0px) scale(1);
   }
+
   50% {
     transform: translate(50px, 65px) scale(1.2);
   }
 }
 
 @keyframes orbFloat4 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0px, 0px) scale(0.95);
   }
+
   50% {
     transform: translate(-45px, -55px) scale(1.15);
   }
@@ -90,9 +106,11 @@
   0% {
     transform: translateX(0) translateY(0) scaleY(1);
   }
+
   50% {
     transform: translateX(-40px) translateY(15px) scaleY(1.08);
   }
+
   100% {
     transform: translateX(0) translateY(0) scaleY(1);
   }
@@ -102,19 +120,24 @@
   0% {
     transform: translateX(0) translateY(0) scaleY(1);
   }
+
   50% {
     transform: translateX(45px) translateY(-20px) scaleY(0.94);
   }
+
   100% {
     transform: translateX(0) translateY(0) scaleY(1);
   }
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.35;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.75;
     transform: scale(1.06);
@@ -125,6 +148,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -134,6 +158,7 @@
   from {
     transform: rotate(360deg);
   }
+
   to {
     transform: rotate(0deg);
   }
@@ -144,10 +169,12 @@
     transform: translateY(0px) translateX(0px);
     opacity: 0.15;
   }
+
   50% {
     transform: translateY(-40px) translateX(12px);
     opacity: 0.8;
   }
+
   100% {
     transform: translateY(-80px) translateX(-8px);
     opacity: 0.1;
@@ -193,4 +220,216 @@
 
 .animate-geo-spin-reverse {
   animation: geoRotateReverse 60s linear infinite;
+}
+
+/* ========================================================
+   SHINY SHIMMER & GLASSY BUTTON ANIMATIONS (NAVBAR & HERO)
+   ======================================================== */
+
+@keyframes glassPopAnimation {
+  0% {
+    transform: scale(0.94);
+    box-shadow: 0 0 0 0 rgba(22, 119, 232, 0.45);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px 5px rgba(22, 119, 232, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 14px 0 rgba(22, 119, 232, 0.18);
+  }
+}
+
+.animate-glass-pop {
+  animation: glassPopAnimation 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Shiny metallic shimmer reflection on hover */
+.nav-glass-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-glass-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.1) 80%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.nav-glass-btn:hover::before {
+  left: 150%;
+}
+
+/* Glassy Active Button State */
+.nav-glass-active {
+  background: rgba(220, 236, 254, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 4px 16px -2px rgba(22, 119, 232, 0.22), inset 0 1px 2px rgba(255, 255, 255, 0.9) !important;
+  color: #0c2340 !important;
+}
+
+html.dark .nav-glass-active {
+  background: rgba(22, 34, 63, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+  color: #60a5fa !important;
+}
+
+/* ========================================================
+   GLOBAL DARK MODE DESIGN SYSTEM (Midnight Slate & Emerald)
+   Seamless dark theme across Landing Page, User Portal & Admin
+   ======================================================== */
+
+html.dark,
+html.dark body {
+  background-color: #080D1A !important;
+  color: #F1F5F9 !important;
+  color-scheme: dark;
+}
+
+/* Custom scrollbars in Dark Mode */
+html.dark ::-webkit-scrollbar-track {
+  background: #0B132B;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 4px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Layout containers & Structural backgrounds */
+html.dark .bg-\[\#F2F7FF\],
+html.dark .bg-\[\#F8FAFC\],
+html.dark .bg-slate-50\/50 {
+  background-color: #080D1A !important;
+}
+
+/* Header & Sidebar Bars */
+html.dark header.bg-white,
+html.dark aside.bg-white {
+  background-color: #0B132B !important;
+  border-color: #1E293B !important;
+}
+
+/* Cards & Surfaces */
+html.dark .bg-white {
+  background-color: #0F1C36 !important;
+  border-color: #1E293B !important;
+  color: #F1F5F9 !important;
+}
+
+/* Secondary Panels & Sub-Cards */
+html.dark .bg-slate-50,
+html.dark .bg-blue-50,
+html.dark .bg-slate-100 {
+  background-color: #132244 !important;
+  border-color: #1E293B !important;
+}
+
+html.dark .bg-blue-50\/50,
+html.dark .bg-blue-50\/70,
+html.dark .bg-blue-50\/30 {
+  background-color: #15274D !important;
+}
+
+/* Borders */
+html.dark .border-\[\#D6E6FA\],
+html.dark .border-blue-100,
+html.dark .border-blue-200,
+html.dark .border-slate-100,
+html.dark .border-slate-200 {
+  border-color: #1E293B !important;
+}
+
+/* Brand Primary Navy Text -> Crisp High Contrast White in Dark Mode */
+html.dark .text-\[\#08165B\],
+html.dark .text-\[\#0f2d59\],
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: #FFFFFF !important;
+}
+
+/* Muted / Subtitle Text */
+html.dark .text-slate-700 {
+  color: #E2E8F0 !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-slate-500 {
+  color: #94A3B8 !important;
+}
+
+/* Inputs, Selects, and Textareas */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #0B132B !important;
+  color: #F1F5F9 !important;
+  border-color: #334155 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+/* Tables in Admin Portal (Document Library, User Management, etc.) */
+html.dark table {
+  border-color: #1E293B !important;
+}
+
+html.dark thead {
+  background-color: #132244 !important;
+  color: #CBD5E1 !important;
+}
+
+html.dark tr.border-b {
+  border-color: #1E293B !important;
+}
+
+html.dark tbody tr:hover {
+  background-color: #162952 !important;
+}
+
+/* Modals & Dialogs */
+html.dark .shadow-2xl,
+html.dark .shadow-xl {
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Dropdown menus & Popovers */
+html.dark .bg-white.rounded-xl,
+html.dark .bg-white.rounded-2xl {
+  background-color: #0F1C36 !important;
+  border-color: #1E293B !important;
+}
+
+/* Hover highlights */
+html.dark .hover\:bg-blue-50:hover,
+html.dark .hover\:bg-slate-50:hover,
+html.dark .hover\:bg-slate-100:hover {
+  background-color: #1E2E55 !important;
 }

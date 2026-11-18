@@ -114,7 +114,7 @@ export default function MiddleRow() {
   ];
 
   return (
-    <section id="founder" className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6 py-4">
+    <section id="founder" className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6 py-4 scroll-mt-20">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
         
         {/* Left Column (approx 34% width): A Message from the Founder */}
@@ -161,11 +161,11 @@ export default function MiddleRow() {
           </div>
         </div>
 
-        {/* Right Column (approx 66% width): How GlobalHealthAI Helps You */}
-        <div className="lg:col-span-8 flex flex-col">
+        {/* Right Column (approx 66% width): How GlobalHealthAI Helps You (Clinical Protocols for Doctors) */}
+        <div id="for-doctors" className="lg:col-span-8 flex flex-col scroll-mt-20">
           <div className="flex items-center justify-between mb-1.5">
             <h3 className="text-sm sm:text-[15px] font-bold text-[#0c2340] tracking-tight">
-              How GlobalHealthAI Helps You
+              How GlobalHealthAI Helps You & Healthcare Providers
             </h3>
             <span className="text-[10px] font-semibold text-[#1677E8] lg:hidden flex items-center gap-1">
               <span>Scroll steps</span> →

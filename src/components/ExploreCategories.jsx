@@ -175,7 +175,7 @@ export default function ExploreCategories() {
   ];
 
   return (
-    <section id="categories" className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6 pt-3 sm:pt-4 pb-5">
+    <section id="categories" className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6 pt-3 sm:pt-4 pb-5 scroll-mt-20">
 
       {/* Category Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">

@@ -4,7 +4,8 @@ import {
   BookOpen,
   Target,
   Users,
-  Globe
+  Globe,
+  Stethoscope
 } from 'lucide-react';
 
 export default function Hero() {
@@ -20,75 +21,105 @@ export default function Hero() {
       icon: BookOpen
     },
     {
-      title: 'Specific &',
-      desc: 'Relevant Answers (≈ 100 words)',
+      title: 'Specific & Relevant Answers',
+      desc: '(≈ 100 words)',
       icon: Target
     },
     {
-      title: 'For You, Your',
-      desc: 'Family and Caregivers',
+      title: 'For You, Your Family',
+      desc: 'and Caregivers',
       icon: Users
     },
     {
-      title: 'English +',
-      desc: 'Regional Languages (Marathi, Hindi)',
+      title: 'English + Regional Languages',
+      desc: '(Marathi, Hindi)',
       icon: Globe
     }
   ];
 
   return (
-    <section id="home" className="relative w-full overflow-hidden bg-gradient-to-r from-[#e6f2fd] via-[#deeffc] to-[#cbe3f7] border-b border-blue-100/60">
+    <section
+      id="home"
+      className="relative w-full overflow-hidden bg-slate-100 border-b border-blue-100/60 min-h-[440px] sm:min-h-[460px] lg:min-h-[490px] xl:min-h-[510px] flex items-center"
+      style={{
+        backgroundImage: `url('/assets/hero-banner-clean-4k.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: '79% center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      {/* High-priority background image for fast crisp rendering */}
+      <img
+        src="/assets/hero-banner-clean-4k.jpg"
+        alt="GlobalHealthAI - Dr Pratap Madhukar Panoramic Hero"
+        className="absolute inset-0 w-full h-full object-cover [object-position:79%_center] sm:[object-position:84%_center] lg:object-right pointer-events-none select-none"
+        loading="eager"
+        fetchPriority="high"
+      />
 
-      {/* Container matching standard max-width */}
-      <div className="relative max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6 py-4 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+      {/* Subtle left-to-right white gradient overlay for high contrast text readability on desktop */}
+      <div className="absolute inset-0 hidden sm:block bg-gradient-to-r from-white/95 via-white/80 to-transparent max-w-[880px] pointer-events-none"></div>
+      
+      {/* Dark mode overlay */}
+      <div className="absolute inset-0 hidden dark:sm:block bg-gradient-to-r from-[#080D1A]/95 via-[#080D1A]/85 to-transparent max-w-[880px] pointer-events-none"></div>
 
-        {/* Left Content Area (Pure crisp React text) */}
-        <div className="w-full md:max-w-[700px] z-10 flex flex-col justify-center">
+      {/* Mobile readability veil: crisp text on left, doctor clearly visible on right */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/60 to-transparent dark:from-[#080D1A]/95 dark:via-[#080D1A]/60 dark:to-transparent sm:hidden pointer-events-none"></div>
 
-          {/* Main Title: GlobalHealthAI™ */}
-          <div className="flex items-center leading-none mb-1">
-            <span className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#0c2340] tracking-tight">
+      {/* Main Container */}
+      <div className="relative max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-9 lg:py-11 z-10 flex flex-col justify-between h-full">
+        
+        {/* Left Side: Typography & Branding (Restricted to left ~58% on mobile so text NEVER overlaps doctor's face) */}
+        <div className="max-w-[56%] xs:max-w-[58%] sm:max-w-[720px]">
+          
+          {/* Logo: GlobalHealthAI™ */}
+          <div className="flex items-center leading-none mb-2.5 sm:mb-3">
+            <span className="text-3xl sm:text-4xl lg:text-[42px] font-black text-[#08165B] tracking-tight">
               GlobalHealth
             </span>
-            <span className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#ea580c] tracking-tight">
+            <span className="text-3xl sm:text-4xl lg:text-[42px] font-black text-[#F04B0A] tracking-tight">
               AI
             </span>
-            <span className="text-base sm:text-lg font-bold text-[#ea580c] ml-1 align-super">™</span>
+            <span className="text-base sm:text-lg font-bold text-[#F04B0A] ml-1 align-super">™</span>
           </div>
 
-          {/* Sub-headings */}
-          <h2 className="text-lg sm:text-[22px] lg:text-[23px] font-bold text-[#0c2340] tracking-tight leading-snug">
+          {/* Headline */}
+          <h1 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[29px] font-black text-[#08165B] tracking-tight leading-snug">
             Know Your Symptoms. Understand the Possibilities.
+          </h1>
+          <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[29px] font-black tracking-tight leading-snug mb-2.5 sm:mb-3">
+            <span className="text-[#F04B0A]">Recognise Danger.</span>{' '}
+            <span className="text-[#08165B]">Take the Next Safe Step.</span>
           </h2>
-          <h3 className="text-lg sm:text-[22px] lg:text-[23px] font-bold tracking-tight leading-snug mb-2.5">
-            <span className="text-[#ea580c]">Recognise Danger.</span>{' '}
-            <span className="text-[#0c2340]">Take the Next Safe Step.</span>
-          </h3>
 
-          {/* Supporting paragraph */}
-          <p className="text-xs sm:text-[13px] text-[#1e293b] leading-relaxed max-w-[620px] mb-3.5 sm:mb-4 font-normal">
+          {/* Subtext */}
+          <p className="text-xs sm:text-[13.5px] lg:text-[14px] text-slate-700 font-medium leading-relaxed max-w-[620px] mb-4 sm:mb-6">
             A physician-curated, AI-powered symptom education platform with 1,000 clinically reviewed cards from 38 years of experience. Clear, practical and reliable guidance for you and your family.
           </p>
+        </div>
 
-          {/* 5 Feature Highlight Boxes */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-2 max-w-[680px]">
+        {/* Badges & Doctor Card Area */}
+        <div className="max-w-[720px]">
+
+          {/* 5 Feature Badges (Bottom-Left Row) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 max-w-[740px] xl:max-w-[780px]">
             {highlights.map((item, idx) => {
               const Icon = item.icon;
               return (
                 <div
                   key={idx}
-                  className="flex items-center gap-1.5 p-1.5 rounded-xl bg-white/90 backdrop-blur-xs border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow"
+                  className="flex items-center gap-2 p-2 rounded-xl bg-white/95 backdrop-blur-md border border-[#D6E6FA] shadow-xs hover:shadow-md transition-all duration-200"
                 >
                   {/* Orange Outline Circle Icon */}
-                  <div className="w-6 sm:w-7 h-6 sm:h-7 rounded-full border border-[#ea580c] flex items-center justify-center text-[#ea580c] shrink-0 bg-orange-50/50">
-                    <Icon className="w-3 sm:w-3.5 h-3 sm:h-3.5 stroke-[2]" />
+                  <div className="w-7 h-7 rounded-full border border-[#F04B0A] flex items-center justify-center text-[#F04B0A] shrink-0 bg-orange-50/70">
+                    <Icon className="w-3.5 h-3.5 stroke-[2.2]" />
                   </div>
 
-                  <div className="leading-tight min-w-0">
-                    <div className="text-[9.5px] sm:text-[10px] font-bold text-[#0c2340] leading-tight truncate">
+                  <div className="min-w-0 leading-tight">
+                    <div className="text-[10px] font-black text-[#08165B] leading-tight line-clamp-1">
                       {item.title}
                     </div>
-                    <div className="text-[8px] sm:text-[8.5px] text-slate-600 font-medium leading-tight line-clamp-1">
+                    <div className="text-[8.5px] text-slate-600 font-medium leading-tight line-clamp-2">
                       {item.desc}
                     </div>
                   </div>
@@ -97,21 +128,31 @@ export default function Hero() {
             })}
           </div>
 
-        </div>
-
-        {/* Right Area: Doctor Banner (Visible on ALL devices: stacked on mobile, right-aligned on desktop) */}
-        <div className="relative w-full md:w-auto flex items-center justify-center md:justify-end shrink-0">
-          <div className="relative w-full max-w-[390px] md:max-w-none h-[180px] xs:h-[210px] sm:h-[250px] md:h-[290px] lg:h-[320px] overflow-hidden rounded-2xl md:rounded-l-3xl shadow-xs md:shadow-none border border-blue-200/80 md:border-none">
-            <img
-              src="/assets/doctor-banner-final.jpg"
-              alt="Dr Pratap Madhukar - Physician & Clinical Editor"
-              className="w-full h-full object-cover object-top xs:object-center md:object-left"
-              loading="eager"
-            />
+          {/* Doctor Info Card: In-flow on mobile (so it NEVER overlaps text or search bar), absolute overlay on desktop */}
+          <div className="mt-3.5 sm:mt-0 sm:absolute sm:right-8 lg:right-12 sm:bottom-4 lg:bottom-5 z-20 w-full sm:w-auto">
+            <div className="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border border-[#D6E6FA] shadow-md sm:shadow-xl hover:shadow-2xl transition-all max-w-[340px] sm:max-w-none">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#08165B] to-[#1677E8] text-white flex items-center justify-center shadow-xs shrink-0">
+                <Stethoscope className="w-4 h-4 text-white" />
+              </div>
+              <div className="text-left leading-tight">
+                <div className="text-[13px] font-black text-[#08165B]">
+                  Dr Pratap Madhukar
+                </div>
+                <div className="text-[10.5px] font-semibold text-[#1677E8] mt-0.5">
+                  Physician • Clinical Editor
+                </div>
+                <div className="text-[9.5px] font-bold text-slate-600 flex items-center gap-1.5 mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  <span>38 Years of Experience</span>
+                </div>
+              </div>
+            </div>
           </div>
+
         </div>
 
       </div>
+
     </section>
   );
 }
